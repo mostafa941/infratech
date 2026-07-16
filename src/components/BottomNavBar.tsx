@@ -1,6 +1,6 @@
 "use client";
 
-import { Search, ShoppingCart, User, LogOut, Package, Menu, X } from 'lucide-react'
+import { Search, ShoppingCart, User, LogOut, Package, Menu, X, Globe } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -8,21 +8,23 @@ import { useAppContext } from '@/context/AppContext'
 import { useState, useRef, useEffect } from 'react'
 
 const NAV_LINKS = [
-  { href: '/', label: 'Home' },
-  { href: '/about-us', label: 'About Us' },
-  { href: '/#services', label: 'Services' },
-  { href: '/storePage', label: 'Store' },
-  { href: '/contact-us', label: 'Contact Us' },
+  { href: '/', labelKey: 'home' },
+  { href: '/about-us', labelKey: 'aboutUs' },
+  { href: '/#services', labelKey: 'services' },
+  { href: '/storePage', labelKey: 'store' },
+  { href: '/contact-us', labelKey: 'contactUs' },
 ]
 
 function BottomNavBar() {
-  const { user, logout, cart, searchQuery, setSearchQuery } = useAppContext();
+  const { user, logout, cart, searchQuery, setSearchQuery, lang, setLang, t } = useAppContext();
   const [dropdownOpen, setDropdownOpen] = useState(false); // desktop profile dropdown
   const [drawerOpen, setDrawerOpen] = useState(false);      // mobile hamburger drawer/modal
   const [searchOpen, setSearchOpen] = useState(false);      // mobile inline search row
   const dropdownRef = useRef<HTMLDivElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
+
+  const isAr = lang === "ar";
 
   // Close desktop dropdown on click outside
   useEffect(() => {
@@ -55,6 +57,10 @@ function BottomNavBar() {
     }
   };
 
+  const toggleLanguage = () => {
+    setLang(lang === "en" ? "ar" : "en");
+  };
+
   const closeDrawer = () => setDrawerOpen(false);
 
   const handleServicesClick = (e: React.MouseEvent) => {
@@ -79,17 +85,10 @@ function BottomNavBar() {
 
   return (
     <>
-      <nav dir="ltr" className="bg-white sticky top-0 z-40 shadow-xs border-b border-slate-100">
+      <nav className="bg-white sticky top-0 z-40 shadow-xs border-b border-slate-100">
         <div className="flex items-center justify-between gap-3 px-4 py-3">
-          {/* Left: hamburger (mobile only) + logo */}
+          {/* Left: logo */}
           <div className="flex items-center gap-3">
-            <button
-              onClick={() => setDrawerOpen(true)}
-              aria-label="Open menu"
-              className="lg:hidden p-1 -ml-1 text-slate-700 hover:text-amber-500 transition-colors focus:outline-none"
-            >
-              <Menu className="w-6 h-6" />
-            </button>
             <Link href={"/"} className="block">
               <Image src="/images/logoInfra.jpg" alt="InfraTech Logo" width={130} height={36} priority className="h-auto w-auto object-contain" />
             </Link>
@@ -101,10 +100,10 @@ function BottomNavBar() {
               <li key={link.href}>
                 <Link
                   href={link.href}
-                  onClick={link.label === 'Services' ? handleServicesClick : undefined}
+                  onClick={link.labelKey === 'services' ? handleServicesClick : undefined}
                   className="block text-sm text-blue-950 font-bold hover:text-amber-500 transition-colors"
                 >
-                  {link.label}
+                  {t(link.labelKey)}
                 </Link>
               </li>
             ))}
@@ -115,7 +114,7 @@ function BottomNavBar() {
             <div className="h-[38px] flex items-center border border-slate-200 rounded-xl pr-3 pl-2 bg-slate-50 focus-within:border-amber-500 focus-within:ring-2 focus-within:ring-amber-500/10 transition-all">
               <input
                 type="text"
-                placeholder="Search products..."
+                placeholder={t("searchPlaceholder")}
                 value={searchQuery}
                 onChange={handleSearchChange}
                 className="border-0 outline-none w-full h-full text-xs text-slate-800 bg-transparent"
@@ -124,8 +123,19 @@ function BottomNavBar() {
             </div>
           </div>
 
-          {/* Right: search toggle (mobile), cart, profile/login */}
+          {/* Right: search toggle (mobile), cart, profile/login, language switch, hamburger */}
           <div className="flex items-center gap-1 sm:gap-2 lg:gap-4">
+            
+            {/* Desktop & Mobile Language Switch Button */}
+            <button
+              onClick={toggleLanguage}
+              className="inline-flex items-center justify-center gap-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold px-3 py-1.5 rounded-xl text-xs transition-colors cursor-pointer mr-1"
+              title={isAr ? "Switch to English" : "تغيير للغة العربية"}
+            >
+              <Globe className="w-3.5 h-3.5" />
+              <span>{isAr ? "EN" : "العربية"}</span>
+            </button>
+
             {/* Mobile search toggle */}
             <button
               onClick={() => setSearchOpen((v) => !v)}
@@ -169,7 +179,7 @@ function BottomNavBar() {
                   {dropdownOpen && (
                     <div className="absolute right-0 mt-2.5 w-52 bg-white border border-slate-100 rounded-xl shadow-xl py-2 z-50 animate-in fade-in slide-in-from-top-2 duration-200">
                       <div className="px-4 py-2 border-b border-slate-50 mb-1">
-                        <p className="text-xs text-slate-400">Signed in as</p>
+                        <p className="text-xs text-slate-400">{t("signedInAs")}</p>
                         <p className="text-sm font-bold text-slate-900 truncate">{user.name}</p>
                       </div>
                       <Link
@@ -178,14 +188,14 @@ function BottomNavBar() {
                         className="flex items-center gap-2 px-4 py-2 text-xs text-slate-700 hover:bg-slate-50 hover:text-amber-500 transition-colors"
                       >
                         <Package className="w-4 h-4" />
-                        My Orders
+                        {t("myOrders")}
                       </Link>
                       <button
                         onClick={handleLogout}
                         className="w-full text-left flex items-center gap-2 px-4 py-2 text-xs text-rose-600 hover:bg-rose-50 transition-colors cursor-pointer"
                       >
                         <LogOut className="w-4 h-4" />
-                        Sign out
+                        {t("logoutBtn")}
                       </button>
                     </div>
                   )}
@@ -193,24 +203,33 @@ function BottomNavBar() {
               ) : (
                 <Link
                   href="/login"
-                  className="bg-amber-500 py-2.5 px-6 flex items-center justify-center gap-2 rounded-xl text-white font-bold hover:bg-amber-600 transition-all text-xs"
+                  className="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-bold py-2 px-4 rounded-xl transition-all text-xs flex items-center gap-2 shadow-sm border border-amber-500/20"
                 >
-                  <span>Log in</span>
-                  <Image src="/icons/login.svg" width={14} height={14} alt="Login Icon" />
+                  <User className="w-3.5 h-3.5" />
+                  <span>{t("loginBtn")}</span>
                 </Link>
               )}
             </div>
+
+            {/* Hamburger (mobile only) — placed at the far right */}
+            <button
+              onClick={() => setDrawerOpen(true)}
+              aria-label="Open menu"
+              className="lg:hidden p-1 -mr-1 text-slate-700 hover:text-amber-500 transition-colors focus:outline-none"
+            >
+              <Menu className="w-6 h-6" />
+            </button>
           </div>
         </div>
 
-        {/* Mobile inline search row — drops down under the header when the search icon is tapped */}
+        {/* Mobile inline search row */}
         {searchOpen && (
           <div className="lg:hidden px-4 pb-3 animate-in fade-in slide-in-from-top-2 duration-200">
             <div className="h-[38px] flex items-center border border-slate-200 rounded-xl pr-3 pl-2 bg-slate-50 focus-within:border-amber-500 focus-within:ring-2 focus-within:ring-amber-500/10 transition-all">
               <input
                 ref={searchInputRef}
                 type="text"
-                placeholder="Search products..."
+                placeholder={t("searchPlaceholder")}
                 value={searchQuery}
                 onChange={handleSearchChange}
                 className="border-0 outline-none w-full h-full text-xs text-slate-800 bg-transparent"
@@ -230,8 +249,8 @@ function BottomNavBar() {
             onClick={closeDrawer}
           />
 
-          {/* Panel */}
-          <div className="absolute left-0 top-0 h-full w-[85%] max-w-sm bg-white shadow-2xl flex flex-col animate-in slide-in-from-left duration-300 overflow-y-auto">
+          {/* Panel — slides in from the right */}
+          <div className="absolute right-0 top-0 h-full w-[85%] max-w-sm bg-white shadow-2xl flex flex-col animate-in slide-in-from-right duration-300 overflow-y-auto">
             {/* Panel header */}
             <div className="flex items-center justify-between px-4 py-3 border-b border-slate-100 sticky top-0 bg-white z-10">
               <Image src="/images/logoInfra.jpg" alt="InfraTech Logo" width={110} height={30} className="h-auto w-auto object-contain" />
@@ -259,7 +278,7 @@ function BottomNavBar() {
                       </div>
                     )}
                     <div className="min-w-0">
-                      <p className="text-xs text-slate-400">Signed in as</p>
+                      <p className="text-xs text-slate-400">{t("signedInAs")}</p>
                       <p className="text-sm font-bold text-slate-900 truncate">{user.name}</p>
                     </div>
                   </div>
@@ -269,24 +288,24 @@ function BottomNavBar() {
                     className="flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm text-slate-700 hover:bg-slate-50 hover:text-amber-500 transition-colors"
                   >
                     <Package className="w-4 h-4" />
-                    My Orders
+                    {t("myOrders")}
                   </Link>
                   <button
                     onClick={handleLogout}
                     className="w-full text-left flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm text-rose-600 hover:bg-rose-50 transition-colors cursor-pointer"
                   >
                     <LogOut className="w-4 h-4" />
-                    Sign out
+                    {t("logoutBtn")}
                   </button>
                 </div>
               ) : (
                 <Link
                   href="/login"
                   onClick={closeDrawer}
-                  className="bg-amber-500 py-2.5 px-6 flex items-center justify-center gap-2 rounded-xl text-white font-bold hover:bg-amber-600 transition-all text-xs w-full"
+                  className="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-bold py-2.5 px-6 flex items-center justify-center gap-2 rounded-xl transition-all text-xs w-full"
                 >
-                  <span>Log in</span>
-                  <Image src="/icons/login.svg" width={14} height={14} alt="Login Icon" />
+                  <User className="w-4 h-4" />
+                  <span>{t("loginBtn")}</span>
                 </Link>
               )}
             </div>
@@ -297,20 +316,20 @@ function BottomNavBar() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    onClick={link.label === 'Services' ? handleServicesClick : closeDrawer}
+                    onClick={link.labelKey === 'services' ? handleServicesClick : closeDrawer}
                     className="block px-3 py-2.5 rounded-lg text-sm text-blue-950 font-bold hover:bg-slate-50 hover:text-amber-500 transition-colors"
                   >
-                    {link.label}
+                    {t(link.labelKey)}
                   </Link>
                 </li>
               ))}
             </ul>
 
-            {/* Top-bar info: address, email, help/support, language — social icons dropped on mobile */}
+            {/* Top-bar info */}
             <div className="px-4 py-4 flex flex-col gap-3">
               <div className="flex items-center gap-2">
                 <Image src="/icons/location.svg" width={14} height={14} alt="Location" />
-                <span className="text-xs text-slate-600">Cairo, Egypt</span>
+                <span className="text-xs text-slate-600">{isAr ? "القاهرة، مصر" : "Cairo, Egypt"}</span>
               </div>
               <a
                 href="mailto:info@infratech-co.com"
@@ -324,17 +343,8 @@ function BottomNavBar() {
                 className="flex items-center gap-2 text-xs text-slate-600 hover:text-amber-500 transition-colors"
               >
                 <Image src="/icons/support.svg" width={14} height={14} alt="Support" />
-                Support
+                {t("support")}
               </a>
-              <div
-                title="Change Language"
-                className="inline-flex items-center justify-center gap-1 bg-amber-400 px-2.5 py-1.5 rounded-xl w-fit hover:bg-amber-500 transition-colors cursor-pointer"
-              >
-                <Image src="/icons/lang.svg" width={14} height={14} alt="Language" />
-                <a href="" className="text-black font-bold text-xs leading-none select-none">
-                  ar
-                </a>
-              </div>
             </div>
           </div>
         </div>

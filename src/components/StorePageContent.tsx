@@ -5,31 +5,43 @@ import axios from "axios";
 import { useAppContext } from "@/context/AppContext";
 import { useRouter } from "next/navigation";
 
-import CategoryGrid, { categories } from "./CategoryGrid";
+import CategoryGrid from "./CategoryGrid";
 import FiltersSidebar from "./FiltersSidebar";
 import ProductsGrid from "./ProductsGrid";
 import BrandsSection from "./BrandsSection";
 
 function StorePageContent() {
-  const { addToCart, searchQuery } = useAppContext();
+  const { addToCart, searchQuery, t } = useAppContext();
   const router = useRouter();
 
   const [products, setProducts] = useState<any[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [categories, setCategories] = useState<any[]>([]);
 
   // Filters State
   const [selectedCategory, setSelectedCategory] = useState("all");
-  const [priceRange, setPriceRange] = useState(1500); // Max range limit
+  const [priceRange, setPriceRange] = useState(150000); // Max range limit
   const [sortBy, setSortBy] = useState("default");
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const res = await axios.get("/api/categories");
+        setCategories(res.data.categories || []);
+      } catch (err) {
+        console.error("Categories fetch failed:", err);
+      }
+    };
+    fetchCategories();
+  }, []);
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         setLoading(true);
-        // We fetch multiple categories to populate the store with richer content
-        const response = await axios.get("https://dummyjson.com/products?limit=100");
-        setProducts(response.data.products);
+        const response = await axios.get("/api/products?limit=100");
+        setProducts(response.data.products || []);
       } catch (err) {
         console.error(err);
       } finally {
@@ -54,8 +66,8 @@ function StorePageContent() {
     if (searchQuery.trim() !== "") {
       result = result.filter(
         (p) =>
-          p.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          p.description.toLowerCase().includes(searchQuery.toLowerCase())
+          (p.name || p.title || "").toLowerCase().includes(searchQuery.toLowerCase()) ||
+          (p.description || "").toLowerCase().includes(searchQuery.toLowerCase())
       );
     }
 
@@ -77,18 +89,12 @@ function StorePageContent() {
   const handleAddToCart = (e: React.MouseEvent, product: any) => {
     e.preventDefault();
     e.stopPropagation();
-    const success = addToCart(product);
-    if (!success) {
-      // Not logged in -> Redirect to login page
-      router.push(`/login?redirect=/products/${product.id}`);
-    } else {
-      alert(`Added "${product.title}" to cart!`);
-    }
+    addToCart(product);
   };
 
   const handleClearFilters = () => {
     setSelectedCategory("all");
-    setPriceRange(2000);
+    setPriceRange(150000);
   };
 
   return (

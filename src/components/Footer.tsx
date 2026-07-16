@@ -3,8 +3,12 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useAppContext } from "@/context/AppContext";
 
 function Footer() {
+  const { t, lang } = useAppContext();
+  const isAr = lang === "ar";
+
   const handleScrollToServices = (e: React.MouseEvent) => {
     // If on homepage, smooth scroll
     if (window.location.pathname === "/") {
@@ -17,7 +21,7 @@ function Footer() {
   };
 
   return (
-    <footer className="bg-slate-950 text-white pt-16 pb-8 border-t border-slate-900" dir="ltr">
+    <footer className="bg-slate-950 text-white pt-16 pb-8 border-t border-slate-900" dir={isAr ? "rtl" : "ltr"}>
       <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
         {/* Brand Information */}
         <div className="flex flex-col gap-4">
@@ -27,7 +31,7 @@ function Footer() {
             </div>
           </Link>
           <p className="text-slate-400 text-xs md:text-sm leading-relaxed mt-2">
-            Connecting today, building tomorrow. Providing high-quality IT infrastructure & networking solutions.
+            {t("footerDesc")}
           </p>
           <div className="flex gap-3 mt-4">
             <a href="#" className="w-8 h-8 rounded-full bg-slate-900 hover:bg-amber-500 flex items-center justify-center transition-colors">
@@ -48,26 +52,26 @@ function Footer() {
         {/* Quick Links */}
         <div>
           <h4 className="text-sm font-bold uppercase tracking-wider mb-6 text-amber-500 border-l-4 border-amber-500 pl-3">
-            Quick Links
+            {t("quickLinks")}
           </h4>
           <ul className="space-y-3 text-xs md:text-sm text-slate-400">
             <li>
-              <Link href="/" className="hover:text-amber-500 transition-colors">Home</Link>
+              <Link href="/" className="hover:text-amber-500 transition-colors">{t("home")}</Link>
             </li>
             <li>
-              <Link href="/about-us" className="hover:text-amber-500 transition-colors">About Us</Link>
+              <Link href="/about-us" className="hover:text-amber-500 transition-colors">{t("aboutUs")}</Link>
             </li>
             <li>
-              <Link href="/storePage" className="hover:text-amber-500 transition-colors">Store</Link>
+              <Link href="/storePage" className="hover:text-amber-500 transition-colors">{t("store")}</Link>
             </li>
             <li>
-              <Link href="/contact-us" className="hover:text-amber-500 transition-colors">Contact Us</Link>
+              <Link href="/contact-us" className="hover:text-amber-500 transition-colors">{t("contactUs")}</Link>
             </li>
             <li>
-              <Link href="/complains" className="hover:text-amber-500 transition-colors">Complains</Link>
+              <Link href="/complains" className="hover:text-amber-500 transition-colors">{t("complains")}</Link>
             </li>
             <li>
-              <Link href="/faq" className="hover:text-amber-500 transition-colors">FAQs</Link>
+              <Link href="/faq" className="hover:text-amber-500 transition-colors">{t("faqs")}</Link>
             </li>
           </ul>
         </div>
@@ -75,26 +79,26 @@ function Footer() {
         {/* Our Services */}
         <div>
           <h4 className="text-sm font-bold uppercase tracking-wider mb-6 text-amber-500 border-l-4 border-amber-500 pl-3">
-            Our Services
+            {t("ourServices")}
           </h4>
           <ul className="space-y-3 text-xs md:text-sm text-slate-400">
             <li>
-              <Link href="/#services" onClick={handleScrollToServices} className="hover:text-amber-500 transition-colors">Network Infrastructure</Link>
+              <Link href="/#services" onClick={handleScrollToServices} className="hover:text-amber-500 transition-colors">{t("serv2_title")}</Link>
             </li>
             <li>
-              <Link href="/#services" onClick={handleScrollToServices} className="hover:text-amber-500 transition-colors">Cyber Security</Link>
+              <Link href="/#services" onClick={handleScrollToServices} className="hover:text-amber-500 transition-colors">{t("serv3_title")}</Link>
             </li>
             <li>
-              <Link href="/#services" onClick={handleScrollToServices} className="hover:text-amber-500 transition-colors">Software Licensing</Link>
+              <Link href="/#services" onClick={handleScrollToServices} className="hover:text-amber-500 transition-colors">{t("serv4_title")}</Link>
             </li>
             <li>
-              <Link href="/#services" onClick={handleScrollToServices} className="hover:text-amber-500 transition-colors">IT Support & Maintenance</Link>
+              <Link href="/#services" onClick={handleScrollToServices} className="hover:text-amber-500 transition-colors">{t("serv5_title")}</Link>
             </li>
             <li>
-              <Link href="/#services" onClick={handleScrollToServices} className="hover:text-amber-500 transition-colors">Hardware Supply</Link>
+              <Link href="/#services" onClick={handleScrollToServices} className="hover:text-amber-500 transition-colors">{t("serv6_title")}</Link>
             </li>
             <li>
-              <Link href="/#services" onClick={handleScrollToServices} className="hover:text-amber-500 transition-colors">CCTV & Surveillance</Link>
+              <Link href="/#services" onClick={handleScrollToServices} className="hover:text-amber-500 transition-colors">{t("serv7_title")}</Link>
             </li>
           </ul>
         </div>
@@ -102,7 +106,7 @@ function Footer() {
         {/* Contact Info & Newsletter */}
         <div>
           <h4 className="text-sm font-bold uppercase tracking-wider mb-6 text-amber-500 border-l-4 border-amber-500 pl-3">
-            Contact Us
+            {t("contactUs")}
           </h4>
           <ul className="space-y-3 text-xs md:text-sm text-slate-400 mb-6">
             <li className="flex items-center gap-2">
@@ -115,19 +119,19 @@ function Footer() {
             </li>
             <li className="flex items-start gap-2">
               <span className="text-amber-500">📍</span>
-              <span>Cairo, Egypt</span>
+              <span>{isAr ? "القاهرة، مصر" : "Cairo, Egypt"}</span>
             </li>
           </ul>
 
-          <h5 className="text-xs font-bold uppercase tracking-wider text-slate-200 mb-3">Newsletter</h5>
+          <h5 className="text-xs font-bold uppercase tracking-wider text-slate-200 mb-3">{t("newsletter")}</h5>
           <form className="flex rounded-lg overflow-hidden border border-slate-800" onSubmit={(e) => e.preventDefault()}>
             <input 
               type="email" 
-              placeholder="Your email..." 
+              placeholder={t("yourEmail")}
               className="bg-slate-900 border-0 outline-none px-3 py-2 text-xs flex-grow text-white" 
             />
             <button className="bg-amber-500 hover:bg-amber-600 px-4 py-2 text-xs font-bold text-white transition-colors cursor-pointer">
-              Subscribe
+              {t("subscribe")}
             </button>
           </form>
         </div>
@@ -135,10 +139,10 @@ function Footer() {
 
       {/* Footer Bottom */}
       <div className="max-w-7xl mx-auto px-4 pt-8 border-t border-slate-900 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-slate-500">
-        <p>© {new Date().getFullYear()} InfraTech. All rights reserved.</p>
+        <p>© {new Date().getFullYear()} InfraTech. {t("rightsReserved")}</p>
         <div className="flex gap-4">
-          <Link href="/about-us" className="hover:text-amber-500">Privacy Policy</Link>
-          <Link href="/about-us" className="hover:text-amber-500">Terms of Service</Link>
+          <Link href="/privacy-policy" className="hover:text-amber-500">{t("privacyPolicy")}</Link>
+          <Link href="/terms-of-service" className="hover:text-amber-500">{t("termsOfService")}</Link>
         </div>
       </div>
     </footer>

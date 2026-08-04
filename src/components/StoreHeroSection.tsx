@@ -9,7 +9,7 @@ function StoreHeroSection() {
   const isAr = lang === "ar";
 
   return (
-    <div style={{background:"#E9E9E9"}} className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center pl-4 md:pl-12 pr-4">
+    <div style={{background:"#E9E9E9"}} className={`grid grid-cols-1 lg:grid-cols-2 gap-8 items-center ${isAr ? "pr-4 md:pr-12 pl-0" : "pl-4 md:pl-12 pr-0"}`}>
       <div className="w-full mt-5">
         <span className="py-1.5 px-3 bg-blue-50 text-blue-600 rounded-2xl text-xs font-bold inline-block">
           {t("heroBadge")}
@@ -29,9 +29,9 @@ function StoreHeroSection() {
       </div>
 
       {/* Align right for normal direction, left for RTL */}
-      <div className={`w-full flex ${isAr ? "justify-start" : "justify-end"} max-[1026px]:hidden`}>
+      <div className="w-full flex justify-end max-[1026px]:hidden">
         <Image 
-          src="/images/hero.png" 
+          src={isAr ? "/images/hero_ar.png" : "/images/hero.png"} 
           width={550} 
           height={380} 
           alt="Store Hero"

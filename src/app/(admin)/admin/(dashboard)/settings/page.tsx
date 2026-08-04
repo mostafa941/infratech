@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { UploadCloud, Settings, Image as ImageIcon } from "lucide-react";
 import { toast } from "react-toastify";
+import { FormSkeleton } from "@/components/Skeletons";
 
 export default function AdminSettingsPage() {
   const [settings, setSettings] = useState<any>({
@@ -71,14 +72,7 @@ export default function AdminSettingsPage() {
   };
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center p-20">
-        <div className="flex flex-col items-center gap-3">
-          <div className="w-10 h-10 border-4 border-amber-500 border-t-transparent rounded-full animate-spin" />
-          <p className="text-sm font-medium text-slate-500">Loading admin configurations...</p>
-        </div>
-      </div>
-    );
+    return <FormSkeleton fields={4} />;
   }
 
   return (

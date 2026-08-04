@@ -5,6 +5,7 @@ import axios from "axios";
 import Link from "next/link";
 import { Phone, MessageCircle, FileText, ChevronRight } from "lucide-react";
 import { toast } from "react-toastify";
+import { TableSkeleton } from "@/components/Skeletons";
 
 export default function AdminOrders() {
   const [orders, setOrders] = useState<any[]>([]);
@@ -39,14 +40,7 @@ export default function AdminOrders() {
   };
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center p-20">
-        <div className="flex flex-col items-center gap-3">
-          <div className="w-10 h-10 border-4 border-amber-500 border-t-transparent rounded-full animate-spin" />
-          <p className="text-sm font-medium text-slate-500">Loading client transactions database...</p>
-        </div>
-      </div>
-    );
+    return <TableSkeleton rows={5} columns={7} />;
   }
 
   return (

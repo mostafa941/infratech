@@ -84,7 +84,7 @@ export default function AdminSidebar({
 
   return (
     <aside
-      className="w-64 bg-slate-900 text-slate-100 flex flex-col justify-between border-r border-slate-800 shrink-0 h-screen sticky top-0"
+      className="w-64 bg-slate-900 text-slate-100 flex flex-col justify-between border-r border-slate-800 shrink-0 h-screen sticky top-0 print:hidden"
       dir={isAr ? "rtl" : "ltr"}
     >
       <div>

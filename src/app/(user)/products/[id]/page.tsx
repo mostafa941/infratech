@@ -8,6 +8,7 @@ import { ShoppingCart, Heart, Share2, Star } from 'lucide-react';
 import { useAppContext } from '@/context/AppContext';
 import BottomNavBar from '@/components/BottomNavBar';
 import Footer from '@/components/Footer';
+import { FormSkeleton } from '@/components/Skeletons';
 
 export default function ProductDetails() {
   const { id } = useParams();
@@ -55,7 +56,20 @@ export default function ProductDetails() {
     addToCart(product);
   };
 
-  if (loading) return <div className="text-center p-20 font-medium text-slate-500">Loading Product Details...</div>;
+  if (loading) return (
+    <div className="flex flex-col min-h-screen bg-white">
+      <BottomNavBar />
+      <div className="w-full max-w-7xl mx-auto py-12 px-4 flex-grow">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start mb-24">
+          <div className="w-full h-[400px] bg-slate-200 rounded-3xl animate-pulse"></div>
+          <div className="pt-8">
+            <FormSkeleton fields={4} />
+          </div>
+        </div>
+      </div>
+      <Footer />
+    </div>
+  );
   if (!product) return <div className="text-center p-20 font-medium text-rose-500">Product not found.</div>;
 
   const title = lang === "ar" && product.nameAr ? product.nameAr : (product.name || product.title);
@@ -137,9 +151,14 @@ export default function ProductDetails() {
               </span>
             </div>
 
-            <div className="flex items-center gap-2 mb-6 text-sm">
-              <span className="text-slate-500">Brand:</span>
-              <span className="font-bold text-slate-800">{product.brand || "IT Hardware"}</span>
+            <div className="flex items-center gap-2 mb-4 text-sm">
+              <span className="text-slate-500">{t("brandLabel") || "Brand:"}</span>
+              <button
+                onClick={() => router.push(`/storePage?brand=${encodeURIComponent(product.brand || "IT Hardware")}`)}
+                className="font-bold text-amber-500 hover:text-amber-600 hover:underline cursor-pointer bg-transparent border-0 p-0 text-sm"
+              >
+                {product.brand || (lang === "ar" ? "إنفراتيك هاردوير" : "IT Hardware")}
+              </button>
             </div>
 
             <p className="text-slate-500 text-sm leading-relaxed border-t border-slate-100 pt-6 mb-6">

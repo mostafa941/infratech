@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { UploadCloud, FolderPlus, Trash2, X } from "lucide-react";
 import { toast } from "react-toastify";
+import { FormSkeleton } from "@/components/Skeletons";
 
 export default function AdminCategories() {
   const [categories, setCategories] = useState<any[]>([]);
@@ -206,9 +207,7 @@ export default function AdminCategories() {
           <h3 className="text-base font-extrabold text-slate-900 pb-4 border-b border-slate-50">Active Categories List</h3>
 
           {loading ? (
-            <div className="text-center py-12 text-slate-400 font-medium text-sm">
-              Loading active categories...
-            </div>
+            <FormSkeleton fields={3} />
           ) : categories.length === 0 ? (
             <div className="text-center py-12 text-slate-400 font-medium text-sm">
               No categories exist in database directory. Create one on the left panel.

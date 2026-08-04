@@ -1,65 +1,69 @@
 "use client";
 
 import React from "react";
-import Image from "next/image";
+import { useAppContext } from "@/context/AppContext";
 
 function SubscribeSection() {
+  const { t, lang } = useAppContext();
+  const isAr = lang === "ar";
+
   return (
-    <section className="w-full my-12 px-4 max-w-7xl mx-auto">
-      <div 
+    <section className="w-full my-12 px-4 max-w-7xl mx-auto" dir={isAr ? "rtl" : "ltr"}>
+      <div
         className="rounded-3xl p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-8 relative overflow-hidden"
-        style={{
-          background: "linear-gradient(135deg, #0f2c3d 0%, #153c52 100%)"
-        }}
+        style={{ background: "linear-gradient(135deg, #0f2c3d 0%, #153c52 100%)" }}
       >
         {/* Left Side: Text and Quote Sheet Design */}
         <div className="flex flex-col md:flex-row items-center gap-6 z-10 max-w-2xl">
           <div className="bg-white p-4 rounded-2xl shadow-lg flex-shrink-0 flex items-center justify-center">
-            {/* Simulation of Quote Icon / Clipboard */}
             <div className="relative w-16 h-16 flex items-center justify-center">
               <svg className="w-12 h-12 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
               </svg>
             </div>
           </div>
-          <div className="text-center md:text-left">
+          <div className={`text-center ${isAr ? "md:text-right" : "md:text-left"}`}>
             <h2 className="text-white text-2xl md:text-3xl font-extrabold tracking-tight mb-2">
-              Need a Quotation?
+              {t("quotationTitle")}
             </h2>
             <p className="text-slate-300 text-sm md:text-base leading-relaxed">
-              Add products to your quote list and we will send you an official quotation matching your requirements.
+              {t("quotationDesc")}
             </p>
           </div>
         </div>
 
         {/* Right Side: Request Quote Button & Trust Factors */}
-        <div className="flex flex-col items-center md:items-end gap-4 z-10 w-full md:w-auto">
+        <div className={`flex flex-col items-center ${isAr ? "md:items-start" : "md:items-end"} gap-4 z-10 w-full md:w-auto`}>
           <a
-            href="https://wa.me/201278167506?text=Hello%20InfraTech%2C%20I%20would%20like%20to%20request%20a%20quotation%20for%20some%20IT%20equipment."
+            href={
+              isAr
+                ? "https://wa.me/201278167506?text=مرحبا%20إنفراتيك%2C%20أود%20طلب%20عرض%20سعر%20لبعض%20معدات%20تكنولوجيا%20المعلومات."
+                : "https://wa.me/201278167506?text=Hello%20InfraTech%2C%20I%20would%20like%20to%20request%20a%20quotation%20for%20some%20IT%20equipment."
+            }
             target="_blank"
             rel="noopener noreferrer"
             className="w-full md:w-auto bg-amber-500 hover:bg-amber-600 text-white font-bold py-3.5 px-8 rounded-xl shadow-lg transition-all duration-300 text-center text-sm uppercase tracking-wider"
           >
-            Request Quote Now
+            {t("requestQuote")}
           </a>
 
           {/* Badges Info */}
           <div className="flex flex-wrap justify-center md:justify-end gap-4 mt-2">
             <div className="flex items-center gap-1.5 text-xs text-slate-300">
               <span className="text-amber-500">💰</span>
-              <span>Best Prices</span>
+              <span>{t("bestPrices")}</span>
             </div>
             <div className="flex items-center gap-1.5 text-xs text-slate-300">
               <span className="text-amber-500">🛡️</span>
-              <span>Official Warranty</span>
+              <span>{t("officialWarranty")}</span>
             </div>
             <div className="flex items-center gap-1.5 text-xs text-slate-300">
               <span className="text-amber-500">⚡</span>
-              <span>Fast Delivery</span>
+              <span>{t("fastDelivery")}</span>
             </div>
             <div className="flex items-center gap-1.5 text-xs text-slate-300">
               <span className="text-amber-500">🤝</span>
-              <span>Expert Support</span>
+              <span>{t("expertSupport")}</span>
             </div>
           </div>
         </div>

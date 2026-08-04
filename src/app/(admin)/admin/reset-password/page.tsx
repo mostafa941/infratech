@@ -88,7 +88,7 @@ export default function AdminResetPassword() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="techinfra70@gmail.com"
-                  className="w-full border border-slate-700 bg-slate-850 rounded-xl px-4 py-3 text-sm text-slate-100 outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 transition-all"
+                  className="w-full border border-slate-700 bg-slate-900 rounded-xl px-4 py-3 text-sm text-slate-100 outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 transition-all"
                 />
               </div>
 
@@ -115,7 +115,7 @@ export default function AdminResetPassword() {
                   onChange={(e) => setOtp(e.target.value)}
                   placeholder="e.g. 123456"
                   maxLength={6}
-                  className="w-full border border-slate-700 bg-slate-850 rounded-xl px-4 py-3 text-sm text-slate-100 outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 transition-all text-center tracking-widest text-lg font-black"
+                  className="w-full border border-slate-700 bg-slate-900 rounded-xl px-4 py-3 text-sm text-slate-100 outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 transition-all text-center tracking-widest text-lg font-black"
                 />
               </div>
 

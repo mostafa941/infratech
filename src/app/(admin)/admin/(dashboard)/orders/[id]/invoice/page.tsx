@@ -4,8 +4,10 @@ import React, { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import axios from "axios";
 import Link from "next/link";
-import { Printer, ArrowLeft } from "lucide-react";
+import { Printer, ArrowLeft, Download } from "lucide-react";
 import { toast } from "react-toastify";
+import { FormSkeleton } from "@/components/Skeletons";
+import html2canvas from "html2canvas-pro";
 
 export default function OrderInvoice() {
   const { id } = useParams();
@@ -38,15 +40,87 @@ export default function OrderInvoice() {
     window.print();
   };
 
+  const handleDownloadImage = async () => {
+    const invoiceElement = document.getElementById("invoice-sheet");
+    if (!invoiceElement) {
+      toast.error("Invoice element not found");
+      return;
+    }
+    try {
+      const canvas = await html2canvas(invoiceElement, {
+        scale: 3,
+        useCORS: true,
+        backgroundColor: "#ffffff",
+        logging: false,
+        onclone: (_doc: Document, el: HTMLElement) => {
+          // html2canvas does not support oklch/lab CSS color functions.
+          // Walk every element and inline safe fallback colors.
+          const sanitizeColor = (color: string) => {
+            if (
+              color.includes("oklch") ||
+              color.includes("lab(") ||
+              color.includes("lch(") ||
+              color.includes("oklab")
+            ) {
+              return ""; // remove unsupported color declarations
+            }
+            return color;
+          };
+
+          const allEls = el.querySelectorAll("*");
+          allEls.forEach((node) => {
+            const htmlNode = node as HTMLElement;
+            const cs = window.getComputedStyle(htmlNode);
+            const bg = cs.backgroundColor;
+            const color = cs.color;
+            const borderColor = cs.borderColor;
+
+            if (
+              bg.includes("oklch") || bg.includes("lab(") || bg.includes("oklab")
+            ) {
+              htmlNode.style.backgroundColor = "transparent";
+            }
+            if (
+              color.includes("oklch") || color.includes("lab(") || color.includes("oklab")
+            ) {
+              htmlNode.style.color = "#1e293b";
+            }
+            if (
+              borderColor.includes("oklch") || borderColor.includes("lab(") || borderColor.includes("oklab")
+            ) {
+              htmlNode.style.borderColor = "#e2e8f0";
+            }
+
+            // Also strip inline styles with unsupported color functions
+            if (htmlNode.style.cssText) {
+              const props = ["color", "background-color", "border-color", "background"];
+              props.forEach((prop) => {
+                const val = htmlNode.style.getPropertyValue(prop);
+                const safe = sanitizeColor(val);
+                if (safe !== val) {
+                  htmlNode.style.removeProperty(prop);
+                }
+              });
+            }
+          });
+        },
+      });
+      const imgData = canvas.toDataURL("image/png");
+      const link = document.createElement("a");
+      link.href = imgData;
+      link.download = `invoice-${order.orderId || order._id}.png`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      toast.success("Invoice image downloaded successfully!");
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to download invoice image");
+    }
+  };
+
   if (loading) {
-    return (
-      <div className="flex items-center justify-center p-20">
-        <div className="flex flex-col items-center gap-3">
-          <div className="w-10 h-10 border-4 border-amber-500 border-t-transparent rounded-full animate-spin" />
-          <p className="text-sm font-medium text-slate-500">Generating invoice sheet...</p>
-        </div>
-      </div>
-    );
+    return <FormSkeleton fields={4} />;
   }
 
   if (!order) {
@@ -69,17 +143,27 @@ export default function OrderInvoice() {
           <span>Back to directory</span>
         </button>
 
-        <button
-          onClick={handlePrint}
-          className="inline-flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-white font-bold px-5 py-2.5 rounded-xl text-xs transition-all cursor-pointer shadow-sm"
-        >
-          <Printer className="w-4 h-4" />
-          <span>Print / Save PDF</span>
-        </button>
+        <div className="flex gap-3">
+          <button
+            onClick={handleDownloadImage}
+            className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-600 text-white font-bold px-5 py-2.5 rounded-xl text-xs transition-all cursor-pointer shadow-sm shadow-amber-500/10"
+          >
+            <Download className="w-4 h-4" />
+            <span>Download Image</span>
+          </button>
+
+          <button
+            onClick={handlePrint}
+            className="inline-flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-white font-bold px-5 py-2.5 rounded-xl text-xs transition-all cursor-pointer shadow-sm"
+          >
+            <Printer className="w-4 h-4" />
+            <span>Print / Save PDF</span>
+          </button>
+        </div>
       </div>
 
       {/* Invoice Sheet */}
-      <div className="bg-white border border-slate-200 rounded-3xl p-8 shadow-md print:border-0 print:shadow-none print:p-0">
+      <div id="invoice-sheet" className="bg-white border border-slate-200 rounded-3xl p-8 shadow-md print:border-0 print:shadow-none print:p-0">
         {/* Invoice Header */}
         <div className="flex flex-col sm:flex-row justify-between items-start gap-4 pb-6 border-b border-slate-200">
           <div>

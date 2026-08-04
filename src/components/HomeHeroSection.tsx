@@ -9,7 +9,7 @@ function HomeHeroSection() {
   const isAr = lang === "ar";
 
   return (
-    <div style={{ background: "#E9E9E9" }} className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center pl-4 md:pl-18 pr-4">
+    <div style={{ background: "#E9E9E9" }} className={`grid grid-cols-1 lg:grid-cols-2 gap-8 items-center ${isAr ? "pr-4 md:pr-18 pl-0" : "pl-4 md:pl-18 pr-0"}`}>
       <div className="w-full mt-5">
         <h3 className="font-bold text-slate-800 text-xs md:text-sm tracking-wider">
           {isAr ? (
@@ -49,9 +49,9 @@ function HomeHeroSection() {
         </div>
       </div>
 
-      <div className="flex justify-center max-[1026px]:hidden">
+      <div className="flex max-[1026px]:hidden justify-end">
         <Image
-          src="/images/hero_2.png"
+          src={isAr ? "/images/hero_2_ar.png" : "/images/hero_2.png"}
           width={580}
           height={400}
           alt="Hero Image"

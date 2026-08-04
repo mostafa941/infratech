@@ -17,6 +17,7 @@ export default function AddProduct() {
   const [price, setPrice] = useState("");
   const [discount, setDiscount] = useState("0");
   const [category, setCategory] = useState("");
+  const [brand, setBrand] = useState("");
   const [stock, setStock] = useState("10");
   const [description, setDescription] = useState("");
   const [descriptionAr, setDescriptionAr] = useState("");
@@ -59,6 +60,7 @@ export default function AddProduct() {
       toast.error("Failed to upload image");
     } finally {
       setUploading(false);
+      e.target.value = "";
     }
   };
 
@@ -81,6 +83,7 @@ export default function AddProduct() {
         price: parseFloat(price),
         discount: parseFloat(discount),
         category,
+        brand,
         stock: parseInt(stock),
         description,
         descriptionAr,
@@ -263,6 +266,18 @@ export default function AddProduct() {
                   </option>
                 ))}
               </select>
+            </div>
+
+            {/* Brand selection input */}
+            <div>
+              <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Brand</label>
+              <input
+                type="text"
+                value={brand}
+                onChange={(e) => setBrand(e.target.value)}
+                placeholder="e.g. Cisco, HP, Dell"
+                className="w-full border border-slate-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 transition-all bg-slate-50"
+              />
             </div>
 
             {/* Featured toggle */}

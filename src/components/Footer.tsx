@@ -1,13 +1,43 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useAppContext } from "@/context/AppContext";
+import { toast } from "react-toastify";
 
 function Footer() {
   const { t, lang } = useAppContext();
   const isAr = lang === "ar";
+  const [subEmail, setSubEmail] = useState("");
+  const [subLoading, setSubLoading] = useState(false);
+
+  const handleSubscribe = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!subEmail || !subEmail.includes("@")) {
+      toast.error(isAr ? "برجاء إدخال بريد إلكتروني صحيح" : "Please enter a valid email address");
+      return;
+    }
+    setSubLoading(true);
+    try {
+      const res = await fetch("/api/subscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: subEmail }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        toast.success(isAr ? "تم الاشتراك بنجاح! ستصلك عروضنا الحصرية" : "Subscribed! Check your email for exclusive offers 🎉");
+        setSubEmail("");
+      } else {
+        toast.error(data.error || (isAr ? "حدث خطأ ما" : "Subscription failed"));
+      }
+    } catch {
+      toast.error(isAr ? "تعذر الاتصال بالخادم" : "Network error. Please try again.");
+    } finally {
+      setSubLoading(false);
+    }
+  };
 
   const handleScrollToServices = (e: React.MouseEvent) => {
     // If on homepage, smooth scroll
@@ -124,14 +154,20 @@ function Footer() {
           </ul>
 
           <h5 className="text-xs font-bold uppercase tracking-wider text-slate-200 mb-3">{t("newsletter")}</h5>
-          <form className="flex rounded-lg overflow-hidden border border-slate-800" onSubmit={(e) => e.preventDefault()}>
+          <form className="flex rounded-lg overflow-hidden border border-slate-800" onSubmit={handleSubscribe}>
             <input 
               type="email" 
               placeholder={t("yourEmail")}
+              value={subEmail}
+              onChange={(e) => setSubEmail(e.target.value)}
               className="bg-slate-900 border-0 outline-none px-3 py-2 text-xs flex-grow text-white" 
             />
-            <button className="bg-amber-500 hover:bg-amber-600 px-4 py-2 text-xs font-bold text-white transition-colors cursor-pointer">
-              {t("subscribe")}
+            <button
+              type="submit"
+              disabled={subLoading}
+              className="bg-amber-500 hover:bg-amber-600 px-4 py-2 text-xs font-bold text-white transition-colors cursor-pointer disabled:opacity-60 whitespace-nowrap"
+            >
+              {subLoading ? "..." : t("subscribe")}
             </button>
           </form>
         </div>

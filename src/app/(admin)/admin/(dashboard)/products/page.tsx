@@ -5,6 +5,7 @@ import axios from "axios";
 import Link from "next/link";
 import { PlusCircle, Trash2, Edit } from "lucide-react";
 import { toast } from "react-toastify";
+import { TableSkeleton } from "@/components/Skeletons";
 
 export default function AdminAllProducts() {
   const [products, setProducts] = useState<any[]>([]);
@@ -40,14 +41,7 @@ export default function AdminAllProducts() {
   };
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center p-20">
-        <div className="flex flex-col items-center gap-3">
-          <div className="w-10 h-10 border-4 border-amber-500 border-t-transparent rounded-full animate-spin" />
-          <p className="text-sm font-medium text-slate-500">Loading products catalog...</p>
-        </div>
-      </div>
-    );
+    return <TableSkeleton rows={5} columns={7} />;
   }
 
   return (
@@ -131,15 +125,24 @@ export default function AdminAllProducts() {
                       </span>
                     </td>
 
-                    {/* Delete Trigger */}
+                    {/* Actions: Edit + Delete */}
                     <td className="p-5 text-center">
-                      <button
-                        onClick={() => handleDelete(p._id)}
-                        className="inline-flex items-center justify-center p-2 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-600 transition-colors cursor-pointer"
-                        title="Delete product"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
+                      <div className="flex items-center justify-center gap-2">
+                        <Link
+                          href={`/admin/products/${p._id}/edit`}
+                          className="inline-flex items-center justify-center p-2 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-600 transition-colors cursor-pointer"
+                          title="Edit product"
+                        >
+                          <Edit className="w-4 h-4" />
+                        </Link>
+                        <button
+                          onClick={() => handleDelete(p._id)}
+                          className="inline-flex items-center justify-center p-2 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-600 transition-colors cursor-pointer"
+                          title="Delete product"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))

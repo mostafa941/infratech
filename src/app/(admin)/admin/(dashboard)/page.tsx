@@ -11,6 +11,7 @@ import {
   AlertCircle,
   CheckCircle,
 } from "lucide-react";
+import { DashboardStatsSkeleton } from "@/components/Skeletons";
 
 export default function AdminDashboardOverview() {
   const [stats, setStats] = useState<any>(null);
@@ -36,14 +37,7 @@ export default function AdminDashboardOverview() {
   }, []);
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center p-20">
-        <div className="flex flex-col items-center gap-3">
-          <div className="w-10 h-10 border-4 border-amber-500 border-t-transparent rounded-full animate-spin" />
-          <p className="text-sm font-medium text-slate-500">Loading overview analytics...</p>
-        </div>
-      </div>
-    );
+    return <DashboardStatsSkeleton />;
   }
 
   const cards = [

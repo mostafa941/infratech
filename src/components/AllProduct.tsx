@@ -6,6 +6,7 @@ import { ChevronLeft, ChevronRight, ShoppingCart, Heart } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useAppContext } from '@/context/AppContext';
+import { ProductSkeleton } from './Skeletons';
 
 interface AllProductProps {
   selectedCategory?: string;
@@ -76,11 +77,10 @@ function AllProduct({ selectedCategory = "all" }: AllProductProps) {
   };
 
   if (loading) return (
-    <div className="flex items-center justify-center p-16">
-      <div className="flex flex-col items-center gap-3">
-        <div className="w-10 h-10 border-4 border-amber-500 border-t-transparent rounded-full animate-spin" />
-        <p className="text-sm font-medium text-slate-500">{t("loadingProducts")}</p>
-      </div>
+    <div className="flex gap-5 overflow-x-auto p-4 max-w-7xl mx-auto my-16">
+      {Array.from({ length: 4 }).map((_, i) => (
+        <ProductSkeleton key={i} />
+      ))}
     </div>
   );
 

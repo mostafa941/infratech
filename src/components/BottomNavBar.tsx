@@ -3,7 +3,7 @@
 import { Search, ShoppingCart, User, LogOut, Package, Menu, X, Globe } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
+import { useRouter, usePathname } from 'next/navigation'
 import { useAppContext } from '@/context/AppContext'
 import { useState, useRef, useEffect } from 'react'
 
@@ -20,11 +20,24 @@ function BottomNavBar() {
   const [dropdownOpen, setDropdownOpen] = useState(false); // desktop profile dropdown
   const [drawerOpen, setDrawerOpen] = useState(false);      // mobile hamburger drawer/modal
   const [searchOpen, setSearchOpen] = useState(false);      // mobile inline search row
+  const [activeSection, setActiveSection] = useState("");   // active section for nav links
   const dropdownRef = useRef<HTMLDivElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
+  const pathname = usePathname();
 
   const isAr = lang === "ar";
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const searchParams = new URLSearchParams(window.location.search);
+      if (searchParams.get("scroll") === "services") {
+        setActiveSection("services");
+      } else {
+        setActiveSection("");
+      }
+    }
+  }, [pathname]);
 
   // Close desktop dropdown on click outside
   useEffect(() => {
@@ -70,10 +83,20 @@ function BottomNavBar() {
       const el = document.getElementById("services");
       if (el) {
         el.scrollIntoView({ behavior: "smooth" });
+        setActiveSection("services");
       }
     } else {
       router.push("/?scroll=services");
     }
+  };
+
+  const checkIsActive = (link: { href: string; labelKey: string }) => {
+    if (link.labelKey === 'services') {
+      return pathname === '/' && activeSection === 'services';
+    } else if (link.labelKey === 'home') {
+      return pathname === '/' && activeSection !== 'services';
+    }
+    return pathname === link.href;
   };
 
   const handleLogout = () => {
@@ -96,17 +119,30 @@ function BottomNavBar() {
 
           {/* Center: nav links (desktop only) */}
           <ul className="hidden lg:flex items-center gap-6">
-            {NAV_LINKS.map((link) => (
-              <li key={link.href}>
-                <Link
-                  href={link.href}
-                  onClick={link.labelKey === 'services' ? handleServicesClick : undefined}
-                  className="block text-sm text-blue-950 font-bold hover:text-amber-500 transition-colors"
-                >
-                  {t(link.labelKey)}
-                </Link>
-              </li>
-            ))}
+            {NAV_LINKS.map((link) => {
+              const isActive = checkIsActive(link);
+              return (
+                <li key={link.href} className="relative py-1">
+                  <Link
+                    href={link.href}
+                    onClick={(e) => {
+                      if (link.labelKey === 'services') {
+                        handleServicesClick(e);
+                      } else {
+                        setActiveSection("");
+                      }
+                    }}
+                    className={`block text-sm font-bold transition-colors ${
+                      isActive 
+                        ? "text-[#3b1702] border-b-2 border-orange-500 pb-1" 
+                        : "text-blue-950 hover:text-amber-500"
+                    }`}
+                  >
+                    {t(link.labelKey)}
+                  </Link>
+                </li>
+              );
+            })}
           </ul>
 
           {/* Desktop search bar */}
@@ -177,7 +213,7 @@ function BottomNavBar() {
                   </button>
 
                   {dropdownOpen && (
-                    <div className="absolute right-0 mt-2.5 w-52 bg-white border border-slate-100 rounded-xl shadow-xl py-2 z-50 animate-in fade-in slide-in-from-top-2 duration-200">
+                    <div className={`absolute ${isAr ? "left-0" : "right-0"} mt-2.5 w-52 bg-white border border-slate-100 rounded-xl shadow-xl py-2 z-50 animate-in fade-in slide-in-from-top-2 duration-200`}>
                       <div className="px-4 py-2 border-b border-slate-50 mb-1">
                         <p className="text-xs text-slate-400">{t("signedInAs")}</p>
                         <p className="text-sm font-bold text-slate-900 truncate">{user.name}</p>
@@ -192,7 +228,7 @@ function BottomNavBar() {
                       </Link>
                       <button
                         onClick={handleLogout}
-                        className="w-full text-left flex items-center gap-2 px-4 py-2 text-xs text-rose-600 hover:bg-rose-50 transition-colors cursor-pointer"
+                        className={`w-full ${isAr ? "text-right" : "text-left"} flex items-center gap-2 px-4 py-2 text-xs text-rose-600 hover:bg-rose-50 transition-colors cursor-pointer`}
                       >
                         <LogOut className="w-4 h-4" />
                         {t("logoutBtn")}
@@ -312,17 +348,31 @@ function BottomNavBar() {
 
             {/* Nav links */}
             <ul className="px-2 py-3 border-b border-slate-100">
-              {NAV_LINKS.map((link) => (
+            {NAV_LINKS.map((link) => {
+              const isActive = checkIsActive(link);
+              return (
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    onClick={link.labelKey === 'services' ? handleServicesClick : closeDrawer}
-                    className="block px-3 py-2.5 rounded-lg text-sm text-blue-950 font-bold hover:bg-slate-50 hover:text-amber-500 transition-colors"
+                    onClick={(e) => {
+                      if (link.labelKey === 'services') {
+                        handleServicesClick(e);
+                      } else {
+                        setActiveSection("");
+                        closeDrawer();
+                      }
+                    }}
+                    className={`block px-3 py-2.5 rounded-lg text-sm font-bold transition-colors ${
+                      isActive 
+                        ? "text-[#3b1702] bg-orange-50/55 border-l-4 border-orange-500" 
+                        : "text-blue-950 hover:bg-slate-50 hover:text-amber-500"
+                    }`}
                   >
                     {t(link.labelKey)}
                   </Link>
                 </li>
-              ))}
+              );
+            })}
             </ul>
 
             {/* Top-bar info */}

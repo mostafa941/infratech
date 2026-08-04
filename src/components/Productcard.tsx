@@ -9,17 +9,21 @@ interface ProductCardProps {
 }
 
 function ProductCard({ product, onAddToCart }: ProductCardProps) {
+  const id = product._id || product.id;
+  const title = product.name || product.title;
+  const thumbnail = (product.images && product.images[0]) || product.thumbnail || "";
+
   return (
     <Link
-      href={`/products/${product.id}`}
+      href={`/products/${id}`}
       className="group/card bg-white border border-slate-100 shadow-xs rounded-2xl p-4 flex flex-col justify-between transition-all duration-300 hover:border-amber-500 hover:shadow-md hover:translate-y-0.5 relative cursor-pointer"
     >
       <div>
         {/* Thumbnail wrapper */}
         <div className="relative w-full h-44 bg-slate-50/50 rounded-xl overflow-hidden mb-4 flex items-center justify-center border border-slate-50">
           <img
-            src={product.thumbnail}
-            alt={product.title}
+            src={thumbnail}
+            alt={title}
             className="max-h-36 max-w-full object-contain transition-transform duration-500 group-hover/card:scale-105"
           />
 
@@ -35,7 +39,7 @@ function ProductCard({ product, onAddToCart }: ProductCardProps) {
         </div>
 
         <h3 className="font-bold text-sm text-slate-900 mb-1 line-clamp-1 group-hover/card:text-amber-500 transition-colors">
-          {product.title}
+          {title}
         </h3>
         <p className="text-xs text-slate-400 line-clamp-2 min-h-[32px] leading-relaxed">
           {product.description}

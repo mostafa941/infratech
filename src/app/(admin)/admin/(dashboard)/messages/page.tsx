@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Mail, CheckCircle, MailOpen } from "lucide-react";
 import { toast } from "react-toastify";
+import { FormSkeleton } from "@/components/Skeletons";
 
 export default function AdminMessages() {
   const [messages, setMessages] = useState<any[]>([]);
@@ -40,14 +41,7 @@ export default function AdminMessages() {
   };
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center p-20">
-        <div className="flex flex-col items-center gap-3">
-          <div className="w-10 h-10 border-4 border-amber-500 border-t-transparent rounded-full animate-spin" />
-          <p className="text-sm font-medium text-slate-500">Opening contact us mailbox...</p>
-        </div>
-      </div>
-    );
+    return <FormSkeleton fields={4} />;
   }
 
   return (

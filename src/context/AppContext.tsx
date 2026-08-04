@@ -2,6 +2,7 @@
 
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { toast, ToastContainer } from "react-toastify";
+import { signOut } from "next-auth/react";
 import "react-toastify/dist/ReactToastify.css";
 
 export interface CartItem {
@@ -84,6 +85,20 @@ const translations: Record<Language, Record<string, string>> = {
     signedInAs: "Signed in as",
     support: "Support",
     langCode: "ar",
+    brandLabel: "Brand:",
+    filters: "Filters",
+    categories: "Categories",
+    maxPrice: "Max Price",
+    sortBy: "Sort By",
+    featured: "Featured",
+    priceLowHigh: "Price: Low to High",
+    priceHighLow: "Price: High to Low",
+    topRated: "Top Rated",
+    showing: "Showing",
+    products: "products",
+    loadingProductsDB: "Loading products database...",
+    noProductsMatch: "No products match your filter search criteria.",
+    clearFilters: "Clear all filters",
 
     // Hero Section
     heroBadge: "Discover the latest hardware offers",
@@ -173,7 +188,70 @@ const translations: Record<Language, Record<string, string>> = {
     termsOfService: "Terms of Service",
     complains: "Complains",
     faqs: "FAQs",
-    rightsReserved: "All rights reserved."
+    rightsReserved: "All rights reserved.",
+
+    // Features Bar
+    feat1Title: "Certified IT Experts",
+    feat1Sub: "Professional & Experienced",
+    feat2Title: "Fast Response Time",
+    feat2Sub: "Quick & Reliable Support",
+    feat3Title: "Enterprise Solutions",
+    feat3Sub: "Scalable For Your Business",
+    feat4Title: "24/7 Technical Support",
+    feat4Sub: "We Are Always Available",
+
+    // Subscribe / Quote Section
+    quotationTitle: "Need a Quotation?",
+    quotationDesc: "Add products to your quote list and we will send you an official quotation matching your requirements.",
+    requestQuote: "Request Quote Now",
+    bestPrices: "Best Prices",
+    officialWarranty: "Official Warranty",
+    fastDelivery: "Fast Delivery",
+    expertSupport: "Expert Support",
+
+    // Cart & Checkout
+    shoppingCart: "Shopping Cart",
+    checkoutDetails: "Checkout Details",
+    confirmation: "Confirmation",
+    cartEmpty: "Your Cart is Empty",
+    cartEmptyDesc: "Browse the shop to add networking equipment or devices.",
+    shopNowBtn: "Shop Now",
+    orderSummary: "Order Summary",
+    subtotal: "Subtotal",
+    shipping: "Shipping",
+    shippingFree: "FREE",
+    total: "Total",
+    proceedCheckout: "Proceed to Checkout",
+    shippingPayment: "Shipping & Payment Details",
+    recipientName: "Recipient Name",
+    fullNamePlaceholder: "Full Name",
+    phoneNumber: "Phone Number",
+    deliveryAddress: "Delivery Address",
+    addressPlaceholder: "Detailed street name, building number, city",
+    paymentMethodLabel: "Payment Method",
+    backToCart: "Back to Cart",
+    confirmPurchase: "Confirm Purchase",
+    fillRequired: "Please fill in Name, Phone, and Address to proceed.",
+    purchaseSuccess: "Purchase Successful!",
+    purchaseSuccessDesc: "Thank you for your business. Your order details are registered under ID:",
+    estimatedDelivery: "Estimated Delivery:",
+    shippingAddress: "Shipping Address:",
+    totalPricePaid: "Total Price Paid:",
+    paymentOption: "Payment Option:",
+    deliveryTime: "3-5 Business Days",
+    viewMyOrders: "View My Orders",
+    backHome: "Back to Home",
+
+    // My Orders page
+    myOrdersTitle: "My Orders",
+    myOrdersDesc: "Track all your past and current orders.",
+    noOrdersYet: "No orders yet.",
+    noOrdersDesc: "You haven't placed any orders yet. Browse our store to get started.",
+    orderDate: "Date",
+    orderStatus: "Status",
+    orderTotal: "Total",
+    orderItems: "Items",
+    orderPayment: "Payment"
   },
   ar: {
     // Nav Bar
@@ -189,6 +267,20 @@ const translations: Record<Language, Record<string, string>> = {
     signedInAs: "تم الدخول باسم",
     support: "الدعم الفني",
     langCode: "en",
+    brandLabel: "العلامة التجارية:",
+    filters: "الفلاتر",
+    categories: "الفئات",
+    maxPrice: "السعر الأقصى",
+    sortBy: "الترتيب حسب",
+    featured: "مميز",
+    priceLowHigh: "السعر: من الأقل للأعلى",
+    priceHighLow: "السعر: من الأعلى للأقل",
+    topRated: "الأعلى تقييماً",
+    showing: "عرض",
+    products: "منتج",
+    loadingProductsDB: "جاري تحميل قاعدة بيانات المنتجات...",
+    noProductsMatch: "لا توجد منتجات تطابق معايير البحث الخاصة بك.",
+    clearFilters: "مسح جميع الفلاتر",
 
     // Hero Section
     heroBadge: "اكتشف أحدث عروض الأجهزة",
@@ -278,7 +370,70 @@ const translations: Record<Language, Record<string, string>> = {
     termsOfService: "شروط الخدمة",
     complains: "الشكاوى والاقتراحات",
     faqs: "الأسئلة الشائعة",
-    rightsReserved: "جميع الحقوق محفوظة."
+    rightsReserved: "جميع الحقوق محفوظة.",
+
+    // Features Bar
+    feat1Title: "خبراء تكنولوجيا معتمدون",
+    feat1Sub: "محترفون وذوو خبرة واسعة",
+    feat2Title: "سرعة الاستجابة",
+    feat2Sub: "دعم سريع وموثوق",
+    feat3Title: "حلول للمؤسسات",
+    feat3Sub: "قابلة للتوسع لأعمالك",
+    feat4Title: "دعم فني 24/7",
+    feat4Sub: "نحن دائماً في خدمتك",
+
+    // Subscribe / Quote Section
+    quotationTitle: "تحتاج إلى عرض سعر؟",
+    quotationDesc: "أضف المنتجات إلى قائمة طلباتك وسنرسل لك عرض سعر رسمي يلائم متطلباتك.",
+    requestQuote: "اطلب عرض سعر الآن",
+    bestPrices: "أفضل الأسعار",
+    officialWarranty: "ضمان رسمي",
+    fastDelivery: "توصيل سريع",
+    expertSupport: "دعم متخصص",
+
+    // Cart & Checkout
+    shoppingCart: "عربة التسوق",
+    checkoutDetails: "تفاصيل الطلب",
+    confirmation: "التأكيد",
+    cartEmpty: "عربة التسوق فارغة",
+    cartEmptyDesc: "تصفح المتجر لإضافة أجهزة ومعدات الشبكات.",
+    shopNowBtn: "تسوق الآن",
+    orderSummary: "ملخص الطلب",
+    subtotal: "المجموع الجزئي",
+    shipping: "الشحن",
+    shippingFree: "مجاني",
+    total: "الإجمالي",
+    proceedCheckout: "متابعة الدفع",
+    shippingPayment: "تفاصيل الشحن والدفع",
+    recipientName: "اسم المستلم",
+    fullNamePlaceholder: "الاسم الكامل",
+    phoneNumber: "رقم الهاتف",
+    deliveryAddress: "عنوان التوصيل",
+    addressPlaceholder: "اسم الشارع، رقم المبنى، المدينة بالتفصيل",
+    paymentMethodLabel: "طريقة الدفع",
+    backToCart: "العودة للعربة",
+    confirmPurchase: "تأكيد الشراء",
+    fillRequired: "يرجى ملء الاسم ورقم الهاتف والعنوان للمتابعة.",
+    purchaseSuccess: "تمت عملية الشراء بنجاح!",
+    purchaseSuccessDesc: "شكراً لتعاملك معنا. تفاصيل طلبك مسجلة برقم المرجع:",
+    estimatedDelivery: "الوقت المتوقع للتسليم:",
+    shippingAddress: "عنوان الشحن:",
+    totalPricePaid: "إجمالي المبلغ المدفوع:",
+    paymentOption: "طريقة الدفع:",
+    deliveryTime: "٣ - ٥ أيام عمل",
+    viewMyOrders: "عرض طلباتي",
+    backHome: "العودة للرئيسية",
+
+    // My Orders page
+    myOrdersTitle: "طلباتي",
+    myOrdersDesc: "تتبع جميع طلباتك الحالية والسابقة.",
+    noOrdersYet: "لا توجد طلبات حتى الآن.",
+    noOrdersDesc: "لم تقم بأي طلبات بعد. تصفح متجرنا للبدء.",
+    orderDate: "التاريخ",
+    orderStatus: "الحالة",
+    orderTotal: "الإجمالي",
+    orderItems: "المنتجات",
+    orderPayment: "الدفع"
   }
 };
 
@@ -331,6 +486,52 @@ export function AppContextProvider({ children }: { children: React.ReactNode }) 
     }
   }, []);
 
+  // Fetch orders from API whenever user status changes
+  useEffect(() => {
+    const fetchOrders = async () => {
+      if (!user) {
+        setOrders([]);
+        return;
+      }
+      try {
+        const res = await fetch("/api/orders");
+        if (res.ok) {
+          const data = await res.json();
+          if (data.orders) {
+            const mappedOrders = data.orders.map((o: any) => ({
+              id: o.orderId || o._id,
+              total: o.total,
+              date: new Date(o.createdAt).toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              }),
+              shippingDetails: {
+                name: o.customer.name,
+                phone: o.customer.phone,
+                address: o.customer.address,
+              },
+              paymentMethod: o.paymentMethod,
+              status: o.status,
+              items: o.items.map((item: any) => ({
+                id: item.productId,
+                title: item.name,
+                price: item.price,
+                thumbnail: item.image || "",
+                category: item.category,
+                quantity: item.quantity,
+              }))
+            }));
+            setOrders(mappedOrders);
+          }
+        }
+      } catch (err) {
+        console.error("Failed to fetch user orders:", err);
+      }
+    };
+    fetchOrders();
+  }, [user]);
+
   const changeLanguage = (newLang: Language) => {
     setLang(newLang);
     localStorage.setItem("inf_lang", newLang);
@@ -348,7 +549,7 @@ export function AppContextProvider({ children }: { children: React.ReactNode }) 
 
   const logout = async () => {
     try {
-      await fetch("/api/auth/signout", { method: "POST" });
+      await signOut({ redirect: false });
     } catch (e) {
       console.error(e);
     }

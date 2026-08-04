@@ -23,19 +23,30 @@ function FiltersSidebar({
   sortBy,
   setSortBy,
 }: FiltersSidebarProps) {
-  const { lang } = useAppContext();
+  const { lang, t } = useAppContext();
 
   return (
     <aside className="w-full lg:w-64 flex-shrink-0 bg-white border border-slate-100 rounded-2xl p-6 shadow-xs h-fit sticky top-20">
       <div className="flex items-center gap-2 border-b border-slate-100 pb-4 mb-6">
         <SlidersHorizontal className="w-4 h-4 text-slate-700" />
-        <h3 className="font-bold text-slate-900 text-sm uppercase tracking-wider">Filters</h3>
+        <h3 className="font-bold text-slate-900 text-sm uppercase tracking-wider">{t("filters")}</h3>
       </div>
 
       {/* Categories Selector */}
       <div className="mb-6">
-        <h4 className="font-bold text-slate-900 text-xs uppercase tracking-wider mb-3">Categories</h4>
+        <h4 className="font-bold text-slate-900 text-xs uppercase tracking-wider mb-3">{t("categories")}</h4>
         <div className="space-y-2">
+          {/* All categories option */}
+          <label className="flex items-center gap-2 text-xs font-medium text-slate-600 cursor-pointer hover:text-amber-500 transition-colors">
+            <input
+              type="radio"
+              name="sidebar-cat"
+              checked={selectedCategory === "all"}
+              onChange={() => setSelectedCategory("all")}
+              className="accent-amber-500"
+            />
+            <span>{lang === "ar" ? "كل الفئات" : "All Categories"}</span>
+          </label>
           {categories.map((cat) => (
             <label key={cat.slug} className="flex items-center gap-2 text-xs font-medium text-slate-600 cursor-pointer hover:text-amber-500 transition-colors">
               <input
@@ -54,7 +65,7 @@ function FiltersSidebar({
       {/* Price range Selector */}
       <div className="mb-6">
         <div className="flex justify-between items-center mb-3">
-          <h4 className="font-bold text-slate-900 text-xs uppercase tracking-wider">Max Price</h4>
+          <h4 className="font-bold text-slate-900 text-xs uppercase tracking-wider">{t("maxPrice")}</h4>
           <span className="text-xs font-bold text-amber-500">${priceRange}</span>
         </div>
         <input
@@ -74,16 +85,16 @@ function FiltersSidebar({
 
       {/* Sort selection */}
       <div>
-        <h4 className="font-bold text-slate-900 text-xs uppercase tracking-wider mb-3">Sort By</h4>
+        <h4 className="font-bold text-slate-900 text-xs uppercase tracking-wider mb-3">{t("sortBy")}</h4>
         <select
           value={sortBy}
           onChange={(e) => setSortBy(e.target.value)}
-          className="w-full border border-slate-200 rounded-lg p-2 text-xs outline-none focus:border-amber-500 bg-white"
+          className="w-full border border-slate-200 rounded-lg p-2 text-xs outline-none focus:border-amber-500 bg-white cursor-pointer"
         >
-          <option value="default">Featured</option>
-          <option value="price-low">Price: Low to High</option>
-          <option value="price-high">Price: High to Low</option>
-          <option value="rating">Top Rated</option>
+          <option value="default">{t("featured")}</option>
+          <option value="price-low">{t("priceLowHigh")}</option>
+          <option value="price-high">{t("priceHighLow")}</option>
+          <option value="rating">{t("topRated")}</option>
         </select>
       </div>
     </aside>

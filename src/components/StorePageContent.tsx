@@ -21,8 +21,19 @@ function StorePageContent() {
 
   // Filters State
   const [selectedCategory, setSelectedCategory] = useState("all");
+  const [selectedBrand, setSelectedBrand] = useState("");
   const [priceRange, setPriceRange] = useState(150000); // Max range limit
   const [sortBy, setSortBy] = useState("default");
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const b = params.get("brand");
+      if (b) {
+        setSelectedBrand(b);
+      }
+    }
+  }, []);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -55,10 +66,17 @@ function StorePageContent() {
   useEffect(() => {
     let result = [...products];
 
-    // Category Filter
+    // Category Filter — exact slug match (case-insensitive)
     if (selectedCategory !== "all") {
       result = result.filter(
-        (p) => p.category.toLowerCase() === selectedCategory.toLowerCase()
+        (p) => p.category && p.category.toLowerCase() === selectedCategory.toLowerCase()
+      );
+    }
+
+    // Brand Filter
+    if (selectedBrand.trim() !== "") {
+      result = result.filter(
+        (p) => p.brand && p.brand.toLowerCase() === selectedBrand.toLowerCase()
       );
     }
 
@@ -84,7 +102,7 @@ function StorePageContent() {
     }
 
     setFilteredProducts(result);
-  }, [products, selectedCategory, priceRange, sortBy, searchQuery]);
+  }, [products, selectedCategory, selectedBrand, priceRange, sortBy, searchQuery]);
 
   const handleAddToCart = (e: React.MouseEvent, product: any) => {
     e.preventDefault();
@@ -95,11 +113,30 @@ function StorePageContent() {
   const handleClearFilters = () => {
     setSelectedCategory("all");
     setPriceRange(150000);
+    setSelectedBrand("");
+    if (typeof window !== "undefined") {
+      window.history.replaceState({}, "", window.location.pathname);
+    }
   };
 
   return (
     <div className="w-full max-w-7xl mx-auto px-4 py-8" dir="ltr">
       <CategoryGrid selectedCategory={selectedCategory} onSelect={setSelectedCategory} />
+
+      {/* Active brand filter banner */}
+      {selectedBrand && (
+        <div className="mb-6 flex items-center gap-3 bg-amber-50 border border-amber-200 rounded-2xl px-5 py-3">
+          <span className="text-xs font-bold text-amber-700 uppercase tracking-wider">
+            {t("brandLabel") || "Brand:"} <span className="text-amber-900">{selectedBrand}</span>
+          </span>
+          <button
+            onClick={handleClearFilters}
+            className="ml-auto text-xs font-bold text-amber-600 hover:text-amber-800 border border-amber-300 rounded-lg px-3 py-1 hover:bg-amber-100 transition-all cursor-pointer"
+          >
+            ✕ Clear Filter
+          </button>
+        </div>
+      )}
 
       <div className="flex flex-col lg:flex-row gap-8">
         <FiltersSidebar

@@ -56,11 +56,10 @@ const OrderSchema = new Schema<IOrder>(
 );
 
 // Auto-generate orderId before save
-OrderSchema.pre("save", function (next) {
+OrderSchema.pre("save", async function () {
   if (!this.orderId) {
     this.orderId = "ORD-" + Math.floor(100000 + Math.random() * 900000);
   }
-  next();
 });
 
 const Order: Model<IOrder> =

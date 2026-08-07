@@ -5,7 +5,7 @@ import { useSearchParams } from "next/navigation";
 import BottomNavBar from "@/components/BottomNavBar";
 import HomeHeroSection from "@/components/HomeHeroSection";
 import FeaturesBar from "@/components/FeaturesBar";
-import BannersSection from "@/components/BannersSection";
+
 import OurServices from "@/components/OurServices";
 import AllProduct from "@/components/AllProduct";
 import SubscribeSection from "@/components/SubscribeSection";
@@ -34,7 +34,7 @@ function HomeContent() {
       <BottomNavBar />
       <HomeHeroSection />
       <FeaturesBar />
-      <BannersSection />
+
       <OurServices />
       <StoreHeroSection/>
       

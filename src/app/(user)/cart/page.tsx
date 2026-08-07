@@ -22,7 +22,10 @@ export default function Cart() {
   const [error, setError] = useState("");
   const [placedOrder, setPlacedOrder] = useState<any>(null);
 
-  const cartTotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  // الشحن والإجمالي
+  const shippingFee = 50; // سعر التوصيل الثابت
+  const cartSubtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const cartTotal = cartSubtotal + shippingFee; // المجموع الكلي شامل الشحن
 
   const handleCheckoutSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -38,6 +41,7 @@ export default function Cart() {
     const order = await addOrder({
       items: cart,
       total: cartTotal,
+      shippingFee,
       shippingDetails: { name, phone, address },
       paymentMethod,
     });
@@ -95,7 +99,7 @@ export default function Cart() {
                       <div className="flex-grow">
                         <h3 className="font-bold text-sm text-slate-800 line-clamp-1">{item.title}</h3>
                         <p className="text-[10px] bg-slate-100 text-slate-600 font-bold px-2 py-0.5 rounded w-fit uppercase tracking-wider mt-1">{item.category}</p>
-                        <p className="text-amber-500 font-extrabold text-sm mt-1.5">${item.price}</p>
+                        <p className="text-amber-500 font-extrabold text-sm mt-1.5">E£{item.price} </p>
                       </div>
                       <div className="flex items-center border border-slate-200 rounded-lg overflow-hidden flex-shrink-0">
                         <button onClick={() => updateQuantity(item.id, item.quantity - 1)} className="p-2 hover:bg-slate-50 transition-colors">
@@ -119,15 +123,17 @@ export default function Cart() {
                   <div className="space-y-3 mb-6 text-sm">
                     <div className="flex justify-between text-slate-500">
                       <span>{t("subtotal")}</span>
-                      <span>${cartTotal}</span>
+                      <span>E£{cartSubtotal} </span>
                     </div>
+                    
                     <div className="flex justify-between text-slate-500">
                       <span>{t("shipping")}</span>
-                      <span className="text-emerald-600 font-bold">{t("shippingFree")}</span>
+                      <span className="text-slate-800 font-bold">E£{shippingFee} </span>
                     </div>
+
                     <div className="flex justify-between text-slate-900 font-bold border-t border-slate-50 pt-3 text-base">
                       <span>{t("total")}</span>
-                      <span className="text-amber-500 font-black">${cartTotal}</span>
+                      <span className="text-amber-500 font-black">E£{cartTotal} </span>
                     </div>
                   </div>
                   <button onClick={() => setStep("checkout")} className="w-full bg-cyan-700 hover:bg-cyan-800 text-white font-bold py-3.5 rounded-xl transition-all text-sm flex items-center justify-center gap-2 cursor-pointer shadow-sm shadow-cyan-700/20">
@@ -227,7 +233,7 @@ export default function Cart() {
                   {t("backToCart")}
                 </button>
                 <button type="submit" className="flex-1 bg-amber-500 hover:bg-amber-600 text-white font-bold py-3.5 rounded-xl transition-all text-sm shadow-md shadow-amber-500/20 text-center cursor-pointer">
-                  {t("confirmPurchase")} (${cartTotal})
+                  {t("confirmPurchase")} E£({cartTotal} )
                 </button>
               </div>
             </form>
@@ -252,7 +258,7 @@ export default function Cart() {
               </div>
               <div className="flex justify-between border-b border-slate-200/60 pb-2">
                 <span className="text-slate-400 font-medium">{t("totalPricePaid")}</span>
-                <span className="text-amber-500 font-black">${placedOrder.total}</span>
+                <span className="text-amber-500 font-black">E£{placedOrder.total} </span>
               </div>
               <div className="flex justify-between">
                 <span className="text-slate-400 font-medium">{t("paymentOption")}</span>

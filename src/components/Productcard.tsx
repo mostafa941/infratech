@@ -60,7 +60,8 @@ function ProductCard({ product, onAddToCart }: ProductCardProps) {
       </div>
 
       <div className="mt-4 pt-3 border-t border-slate-50 flex items-center justify-between">
-        <p className="text-amber-500 font-extrabold text-base">${product.price}</p>
+        {/* تم التعديل هنا */}
+        <p className="text-amber-500 font-extrabold text-base">E£{product.price} </p>
         <span className="text-[10px] bg-amber-50 text-amber-600 font-bold px-2 py-0.5 rounded-md uppercase tracking-wider">
           {product.category}
         </span>

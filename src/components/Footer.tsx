@@ -64,17 +64,29 @@ function Footer() {
             {t("footerDesc")}
           </p>
           <div className="flex gap-3 mt-4">
-            <a href="#" className="w-8 h-8 rounded-full bg-slate-900 hover:bg-amber-500 flex items-center justify-center transition-colors">
+            <a 
+              href="https://www.facebook.com/profile.php?id=61576591353849" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="w-8 h-8 rounded-full bg-slate-900 hover:bg-amber-500 flex items-center justify-center transition-colors"
+            >
               <Image src="/icons/facebook.svg" width={16} height={16} alt="Facebook" />
             </a>
-            <a href="#" className="w-8 h-8 rounded-full bg-slate-900 hover:bg-amber-500 flex items-center justify-center transition-colors">
+            <a 
+              href="https://www.instagram.com/infra_tech70/" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="w-8 h-8 rounded-full bg-slate-900 hover:bg-amber-500 flex items-center justify-center transition-colors"
+            >
               <Image src="/icons/instagram.svg" width={14} height={14} alt="Instagram" />
             </a>
-            <a href="#" className="w-8 h-8 rounded-full bg-slate-900 hover:bg-amber-500 flex items-center justify-center transition-colors">
+            <a 
+              href="https://www.linkedin.com/company/108195104/admin/dashboard/" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="w-8 h-8 rounded-full bg-slate-900 hover:bg-amber-500 flex items-center justify-center transition-colors"
+            >
               <Image src="/icons/linkedin.svg" width={14} height={14} alt="Linkedin" />
-            </a>
-            <a href="#" className="w-8 h-8 rounded-full bg-slate-900 hover:bg-amber-500 flex items-center justify-center transition-colors">
-              <Image src="/icons/tiktok.svg" width={14} height={14} alt="Tiktok" />
             </a>
           </div>
         </div>
@@ -141,7 +153,7 @@ function Footer() {
           <ul className="space-y-3 text-xs md:text-sm text-slate-400 mb-6">
             <li className="flex items-center gap-2">
               <span className="text-amber-500">📞</span>
-              <a href="tel:01278167506" className="hover:text-amber-500">+20 127 816 7506</a>
+              <a href="tel:01024291886" className="hover:text-amber-500">+20 102 429 1886</a>
             </li>
             <li className="flex items-center gap-2">
               <span className="text-amber-500">📧</span>
@@ -149,7 +161,7 @@ function Footer() {
             </li>
             <li className="flex items-start gap-2">
               <span className="text-amber-500">📍</span>
-              <span>{isAr ? "القاهرة، مصر" : "Cairo, Egypt"}</span>
+              <span>{isAr ? "الإسكندرية، مصر" : "Alexandria, Egypt"}</span>
             </li>
           </ul>
 

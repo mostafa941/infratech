@@ -2,6 +2,7 @@
 
 import React from "react";
 import { useAppContext } from "@/context/AppContext";
+import Link from "next/link";
 
 function SubscribeSection() {
   const { t, lang } = useAppContext();
@@ -34,18 +35,13 @@ function SubscribeSection() {
 
         {/* Right Side: Request Quote Button & Trust Factors */}
         <div className={`flex flex-col items-center ${isAr ? "md:items-start" : "md:items-end"} gap-4 z-10 w-full md:w-auto`}>
-          <a
-            href={
-              isAr
-                ? "https://wa.me/201278167506?text=مرحبا%20إنفراتيك%2C%20أود%20طلب%20عرض%20سعر%20لبعض%20معدات%20تكنولوجيا%20المعلومات."
-                : "https://wa.me/201278167506?text=Hello%20InfraTech%2C%20I%20would%20like%20to%20request%20a%20quotation%20for%20some%20IT%20equipment."
-            }
-            target="_blank"
+          <Link href={"/contact-us"}
+       
             rel="noopener noreferrer"
             className="w-full md:w-auto bg-amber-500 hover:bg-amber-600 text-white font-bold py-3.5 px-8 rounded-xl shadow-lg transition-all duration-300 text-center text-sm uppercase tracking-wider"
           >
             {t("requestQuote")}
-          </a>
+          </Link>
 
           {/* Badges Info */}
           <div className="flex flex-wrap justify-center md:justify-end gap-4 mt-2">

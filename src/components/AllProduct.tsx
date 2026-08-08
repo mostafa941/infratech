@@ -177,7 +177,7 @@ function AllProduct({ selectedCategory = "all" }: AllProductProps) {
                 <div className="mt-4 pt-3 border-t border-slate-50 flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <p className="text-amber-500 font-extrabold text-base">
-                      E£{product.price}
+                      EGP{product.price}
                     </p>
                     {product.discount > 0 && (
                       <span className="text-xs text-slate-400 line-through">

@@ -134,7 +134,7 @@ export default function ProductDetails() {
             {/* Price */}
             <div className="flex items-center gap-3 mb-6">
               <span className="text-3xl font-black text-amber-500">
-                ${product.price}
+                EGP{product.price}
               </span>
               {product.discount > 0 && (
                 <span className="text-lg text-slate-400 line-through">

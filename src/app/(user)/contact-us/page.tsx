@@ -250,7 +250,7 @@ export default function ContactUs() {
                       required
                       value={form.name}
                       onChange={handleChange}
-                      placeholder={isAr ? " علي محمد " : "Ali Mohamed"}
+                      placeholder={isAr ? " ادخل اسمك" : "Enter Your Name"}
                       className="w-full border border-slate-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 bg-slate-50 focus:bg-white transition-all"
                     />
                   </div>
@@ -264,7 +264,7 @@ export default function ContactUs() {
                       required
                       value={form.email}
                       onChange={handleChange}
-                      placeholder="infra@company.com"
+                      placeholder="example@gmail.com"
                       className="w-full border border-slate-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 bg-slate-50 focus:bg-white transition-all"
                     />
                   </div>

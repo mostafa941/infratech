@@ -444,6 +444,7 @@ export function AppContextProvider({ children }: { children: React.ReactNode }) 
   const [orders, setOrders] = useState<Order[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [lang, setLang] = useState<Language>("en");
+  const [mounted, setMounted] = useState(false);
 
   // Fetch session on mount (NextAuth compatibility)
   useEffect(() => {
@@ -484,6 +485,8 @@ export function AppContextProvider({ children }: { children: React.ReactNode }) 
     if (storedLang === "en" || storedLang === "ar") {
       setLang(storedLang);
     }
+
+    setMounted(true);
   }, []);
 
   // Fetch orders from API whenever user status changes
@@ -537,8 +540,11 @@ export function AppContextProvider({ children }: { children: React.ReactNode }) 
     localStorage.setItem("inf_lang", newLang);
   };
 
+  // Use default "en" translations until client has mounted to avoid hydration mismatch
+  const effectiveLang = mounted ? lang : "en";
+
   const t = (key: string): string => {
-    return translations[lang][key] || key;
+    return translations[effectiveLang][key] || key;
   };
 
   const login = (userData: User) => {
@@ -738,12 +744,12 @@ export function AppContextProvider({ children }: { children: React.ReactNode }) 
         addOrder,
         searchQuery,
         setSearchQuery,
-        lang,
+        lang: effectiveLang,
         setLang: changeLanguage,
         t,
       }}
     >
-      <div dir={lang === "ar" ? "rtl" : "ltr"} className={lang === "ar" ? "rtl" : "ltr"}>
+      <div dir={effectiveLang === "ar" ? "rtl" : "ltr"} className={effectiveLang === "ar" ? "rtl" : "ltr"}>
         {children}
         <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} />
       </div>

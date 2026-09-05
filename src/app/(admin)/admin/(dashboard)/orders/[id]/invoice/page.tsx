@@ -213,7 +213,7 @@ export default function OrderInvoice() {
                   </div>
                 </div>
                 <div className="text-right">
-                  <p className="font-black text-sm text-slate-900">${item.price}</p>
+                  <p className="font-black text-sm text-slate-900">{item.price} EGP</p>
                   <p className="text-xs text-slate-400">Qty: {item.quantity}</p>
                 </div>
               </div>
@@ -226,15 +226,20 @@ export default function OrderInvoice() {
           <div className="w-full sm:w-64 space-y-2.5 text-sm">
             <div className="flex justify-between text-slate-500">
               <span>Subtotal</span>
-              <span>${order.total}</span>
+              <span>{order.items.reduce((s: number, i: any) => s + i.price * i.quantity, 0)} EGP</span>
             </div>
             <div className="flex justify-between text-slate-500">
               <span>Shipping Fee</span>
-              <span className="text-emerald-600 font-bold">FREE</span>
+              <span className="font-bold">
+                {(() => {
+                  const totalShip = order.items.reduce((s: number, i: any) => s + (i.shippingFee || 0) * i.quantity, 0);
+                  return totalShip > 0 ? `${totalShip} EGP` : <span className="text-emerald-600">FREE</span>;
+                })()}
+              </span>
             </div>
             <div className="flex justify-between text-slate-950 font-black text-base border-t border-slate-200 pt-2.5">
               <span>Total Paid</span>
-              <span className="text-amber-500">${order.total}</span>
+              <span className="text-amber-500">{order.total} EGP</span>
             </div>
           </div>
         </div>

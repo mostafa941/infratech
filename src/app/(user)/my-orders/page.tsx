@@ -76,7 +76,7 @@ export default function MyOrders() {
                         <span className="text-[9px] text-slate-400">{isAr ? "الكمية:" : "Qty:"} {item.quantity}</span>
                       </div>
                       <div className={isAr ? "text-left" : "text-right"}>
-                        <span className="font-extrabold text-xs text-slate-800">${item.price * item.quantity}</span>
+                        <span className="font-extrabold text-xs text-slate-800">{item.price * item.quantity} EGP</span>
                       </div>
                     </div>
                   ))}
@@ -102,7 +102,7 @@ export default function MyOrders() {
                     <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider block">
                       {t("totalPricePaid")}
                     </span>
-                    <span className="font-black text-amber-500 text-base">${order.total}</span>
+                    <span className="font-black text-amber-500 text-base">{order.total} EGP</span>
                   </div>
                 </div>
               </div>

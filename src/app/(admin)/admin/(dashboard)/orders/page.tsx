@@ -121,7 +121,7 @@ export default function AdminOrders() {
 
                     {/* Total & Payment Method */}
                     <td className="p-5 font-black text-slate-900">
-                      <p>${o.total}</p>
+                      <p>{o.total} EGP</p>
                       <span className="text-[10px] text-slate-400 block font-normal">{o.paymentMethod}</span>
                     </td>
 

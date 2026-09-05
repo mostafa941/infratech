@@ -22,10 +22,10 @@ export default function Cart() {
   const [error, setError] = useState("");
   const [placedOrder, setPlacedOrder] = useState<any>(null);
 
-  // الشحن والإجمالي
-  const shippingFee = 50; // سعر التوصيل الثابت
+  // الشحن والإجمالي - محسوب من سعر الشحن الخاص بكل منتج
   const cartSubtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  const cartTotal = cartSubtotal + shippingFee; // المجموع الكلي شامل الشحن
+  const totalShippingFee = cart.reduce((sum, item) => sum + (item.shippingFee || 0) * item.quantity, 0);
+  const cartTotal = cartSubtotal + totalShippingFee; // المجموع الكلي شامل الشحن
 
   const handleCheckoutSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -38,7 +38,6 @@ export default function Cart() {
       return;
     }
 
-    // تم حذف shippingFee لتجنب خطأ TypeScript أثناء الـ Build
     const order = await addOrder({
       items: cart,
       total: cartTotal,
@@ -128,7 +127,9 @@ export default function Cart() {
                     
                     <div className="flex justify-between text-slate-500">
                       <span>{t("shipping")}</span>
-                      <span className="text-slate-800 font-bold">{shippingFee} EGP</span>
+                      <span className="text-slate-800 font-bold">
+                        {totalShippingFee > 0 ? `${totalShippingFee} EGP` : <span className="text-emerald-600 font-bold">{t("shippingFree")}</span>}
+                      </span>
                     </div>
 
                     <div className="flex justify-between text-slate-900 font-bold border-t border-slate-50 pt-3 text-base">

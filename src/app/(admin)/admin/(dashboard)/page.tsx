@@ -43,28 +43,28 @@ export default function AdminDashboardOverview() {
   const cards = [
     {
       title: "Today's Sales",
-      value: `$${stats?.today?.total || 0}`,
+      value: `${stats?.today?.total || 0} EGP`,
       desc: `${stats?.today?.count || 0} Orders placed today`,
       icon: TrendingUp,
       color: "bg-emerald-500/10 text-emerald-600 border-emerald-500/20",
     },
     {
       title: "Weekly Revenue",
-      value: `$${stats?.week?.total || 0}`,
+      value: `${stats?.week?.total || 0} EGP`,
       desc: `${stats?.week?.count || 0} Orders this week`,
       icon: ShoppingBag,
       color: "bg-cyan-500/10 text-cyan-600 border-cyan-500/20",
     },
     {
       title: "Monthly Volume",
-      value: `$${stats?.month?.total || 0}`,
+      value: `${stats?.month?.total || 0} EGP`,
       desc: `${stats?.month?.count || 0} Orders this month`,
       icon: TrendingUp,
       color: "bg-amber-500/10 text-amber-600 border-amber-500/20",
     },
     {
       title: "Total Transactions",
-      value: `$${stats?.all?.total || 0}`,
+      value: `${stats?.all?.total || 0} EGP`,
       desc: `${stats?.all?.count || 0} Lifetime orders`,
       icon: Users,
       color: "bg-violet-500/10 text-violet-600 border-violet-500/20",
@@ -127,7 +127,7 @@ export default function AdminDashboardOverview() {
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className="font-extrabold text-sm text-slate-900">${o.total}</p>
+                    <p className="font-extrabold text-sm text-slate-900">{o.total} EGP</p>
                     <span className={`inline-block text-[9px] font-bold px-2 py-0.5 rounded-full uppercase ${
                       o.status === "delivered" ? "bg-emerald-50 text-emerald-600 border border-emerald-100" : "bg-amber-50 text-amber-600 border border-amber-100"
                     }`}>

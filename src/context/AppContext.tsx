@@ -9,6 +9,7 @@ export interface CartItem {
   id: string; // Changed to string for MongoDB compatibility
   title: string;
   price: number;
+  shippingFee: number;
   thumbnail: string;
   category: string;
   quantity: number;
@@ -584,6 +585,7 @@ export function AppContextProvider({ children }: { children: React.ReactNode }) 
             id: prodId,
             title: product.title || product.name,
             price: product.price,
+            shippingFee: product.shippingFee || 0,
             thumbnail: product.thumbnail || (product.images && product.images[0]) || "",
             category: product.category,
             quantity: 1,
@@ -675,6 +677,7 @@ export function AppContextProvider({ children }: { children: React.ReactNode }) 
         productId: item.id,
         name: item.title,
         price: item.price,
+        shippingFee: item.shippingFee || 0,
         quantity: item.quantity,
         image: item.thumbnail,
         category: item.category

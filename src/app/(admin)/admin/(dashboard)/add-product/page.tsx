@@ -15,6 +15,7 @@ export default function AddProduct() {
   const [name, setName] = useState("");
   const [nameAr, setNameAr] = useState("");
   const [price, setPrice] = useState("");
+  const [shippingFee, setShippingFee] = useState("0");
   const [discount, setDiscount] = useState("0");
   const [category, setCategory] = useState("");
   const [brand, setBrand] = useState("");
@@ -81,6 +82,7 @@ export default function AddProduct() {
         name,
         nameAr,
         price: parseFloat(price),
+        shippingFee: parseFloat(shippingFee) || 0,
         discount: parseFloat(discount),
         category,
         brand,
@@ -213,13 +215,26 @@ export default function AddProduct() {
 
             {/* Price */}
             <div>
-              <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Base Price ($ USD)</label>
+              <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Base Price (EGP)</label>
               <input
                 type="number"
                 required
                 value={price}
                 onChange={(e) => setPrice(e.target.value)}
                 placeholder="499"
+                className="w-full border border-slate-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 transition-all bg-slate-50"
+              />
+            </div>
+
+            {/* Shipping Fee */}
+            <div>
+              <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Shipping Fee (EGP)</label>
+              <input
+                type="number"
+                value={shippingFee}
+                onChange={(e) => setShippingFee(e.target.value)}
+                placeholder="0"
+                min={0}
                 className="w-full border border-slate-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 transition-all bg-slate-50"
               />
             </div>

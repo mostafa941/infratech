@@ -48,7 +48,7 @@ export default function AdminAnalytics() {
           <div key={idx} className={`border rounded-3xl p-6 shadow-xs flex flex-col justify-between gap-4 bg-white`}>
             <div>
               <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">{r.label}</p>
-              <h3 className="text-3xl font-black text-slate-900">${r.sum}</h3>
+              <h3 className="text-3xl font-black text-slate-900">{r.sum} EGP</h3>
             </div>
             <div className={`p-3 rounded-2xl border text-xs font-bold ${r.bg}`}>
               Total Transactions: {r.count} purchases
@@ -70,7 +70,7 @@ export default function AdminAnalytics() {
             {data.chartData.map((day: any, idx: number) => (
               <div key={idx} className="flex justify-between items-center p-4 bg-slate-50 rounded-2xl border border-slate-100 text-sm">
                 <span className="font-bold text-slate-600">{day.date}</span>
-                <span className="font-black text-amber-500">${day.total}</span>
+                <span className="font-black text-amber-500">{day.total} EGP</span>
               </div>
             ))}
           </div>

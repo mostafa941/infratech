@@ -111,7 +111,7 @@ export default function AdminAllProducts() {
                     </td>
 
                     {/* Price */}
-                    <td className="p-5 font-extrabold text-slate-900">${p.price}</td>
+                    <td className="p-5 font-extrabold text-slate-900">{p.price} EGP</td>
 
                     {/* Discount */}
                     <td className="p-5 font-bold text-rose-500">

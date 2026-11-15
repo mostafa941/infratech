@@ -5,8 +5,6 @@ import { sendOTPEmail } from "@/lib/mailer";
 // Use Redis/DB in production for multi-instance setups
 const otpStore = new Map<string, { otp: string; expires: number; newPassword?: string }>();
 
-export { otpStore };
-
 export async function POST(req: NextRequest) {
   try {
     const { action, email, otp, newPassword } = await req.json();

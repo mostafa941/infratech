@@ -8,10 +8,9 @@ import FeaturesBar from "@/components/FeaturesBar";
 
 import OurServices from "@/components/OurServices";
 import AllProduct from "@/components/AllProduct";
-import SubscribeSection from "@/components/SubscribeSection";
+import WhyChooseUs from "@/components/WhyChooseUs";
 import Footer from "@/components/Footer";
-import StoreHeroSection from "@/components/StoreHeroSection";
-import CategoryGrid from "@/components/CategoryGrid";
+import ExploreStoreBanner from "@/components/ExploreStoreBanner";
 
 function HomeContent() {
   const searchParams = useSearchParams();
@@ -36,18 +35,11 @@ function HomeContent() {
       <FeaturesBar />
 
       <OurServices />
-      <StoreHeroSection/>
-      
-      {/* Category picker — sits between the store hero and the product grid */}
-      <div className="w-full max-w-7xl mx-auto px-4 mt-10">
-        <CategoryGrid
-          selectedCategory={selectedCategory}
-          onSelect={setSelectedCategory}
-        />
-      </div>
+      <ExploreStoreBanner />
 
       <AllProduct selectedCategory={selectedCategory} />
-      <SubscribeSection />
+      <WhyChooseUs />
+     
       <Footer />
     </div>
   );

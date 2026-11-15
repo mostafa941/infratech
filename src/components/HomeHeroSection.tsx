@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import React from "react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useAppContext } from "@/context/AppContext";
 
 function HomeHeroSection() {
@@ -9,57 +10,88 @@ function HomeHeroSection() {
   const isAr = lang === "ar";
 
   return (
-    <div style={{ background: "#E9E9E9" }} className={`grid grid-cols-1 lg:grid-cols-2 gap-8 items-center ${isAr ? "pr-4 md:pr-18 pl-0" : "pl-4 md:pl-18 pr-0"}`}>
-      <div className="w-full mt-5">
-        <h3 className="font-bold text-slate-800 text-xs md:text-sm tracking-wider">
-          {isAr ? (
-            <>تواصل <span className="text-amber-600">اليوم</span>، بناء <span className="text-cyan-700">الغد</span></>
-          ) : (
-            <>CONNECTING <span className="text-amber-600">TODAY</span>, <span className="text-cyan-700">BUILDING TOMORROW</span></>
-          )}
-        </h3>
-        <h1 className="text-2xl md:text-4xl lg:text-5xl font-extrabold text-slate-900 mt-4 leading-tight">
-          {isAr ? (
-            <>تمكين الشركات من خلال <span className="text-cyan-700">بنية تحتية ذكية</span> لتكنولوجيا المعلومات و <span className="text-amber-600">الحلول الرقمية</span></>
-          ) : (
-            <>Empowering Businesses Through Smart <span className="text-cyan-700">IT Infrastructure</span> & <span className="text-amber-600">Digital Solutions</span></>
-          )}
-        </h1>
-        <p className="text-sm md:text-base text-gray-500 mt-4 leading-relaxed max-w-xl">
-          {isAr
-            ? "نحن نقدم حلولاً متكاملة لتكنولوجيا المعلومات تشمل البنية التحتية للشبكات، وتراخيص البرمجيات، وتوريد الأجهزة، وأنظمة كاميرات المراقبة، والدعم الفني المتخصص."
-            : "We provide end-to-end IT solutions including network infrastructure, software licensing, hardware supply, CCTV systems, and expert technical support."}
-        </p>
-        <div className="flex flex-wrap items-center gap-4 mt-6">
-          <a
-            href={isAr ? "https://wa.me/201278167506?text=مرحبا%20إنفراتيك،%20أنا%20مهتم%20بالحصول%20على%20استشارة%20مجانية." : "https://wa.me/201278167506?text=Hi%20InfraTech,%20I'm%20interested%20in%20a%20consultation."}
-            target="_blank"
-            className="flex items-center justify-center bg-amber-500 py-3 px-6 rounded-xl text-white gap-2.5 font-bold hover:bg-amber-600 transition-all text-xs md:text-sm shadow-md shadow-amber-500/10 w-[230px] sm:w-auto"
+    <section className="w-full relative overflow-hidden m-0 p-0">
+      <div
+        dir={isAr ? "rtl" : "ltr"}
+        className="relative w-full min-h-[440px] sm:min-h-[480px] lg:min-h-[520px] xl:min-h-[560px] flex items-start"
+      >
+        {/* Background Image: edge-to-edge full screen width */}
+        <Image
+          src={isAr ? "/images/new_hero_ar.png" : "/images/new_hero.png"}
+          alt={
+            isAr
+              ? "إنفراتيك - حلول شاملة لتكنولوجيا المعلومات والشبكات"
+              : "InfraTech - Comprehensive IT & Network Solutions"
+          }
+          fill
+          priority
+          className="object-cover object-center pointer-events-none select-none"
+          sizes="100vw"
+        />
+
+        {/* Content Container aligned within max-w-7xl for clean readability */}
+        <div className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-10 md:px-14 lg:px-16 pt-8 sm:pt-10 md:pt-12 lg:pt-14 pb-10 sm:pb-12 flex">
+          <div
+            className={`w-full max-w-xl lg:max-w-2xl ${
+              isAr ? "text-right mr-0 ml-auto" : "text-left ml-0 mr-auto"
+            }`}
           >
-            <span>{isAr ? "احصل على استشارة مجانية" : "Get a Free Consultation"}</span>
-            <Image src="/icons/arrow_right.svg" width={18} height={10} alt="arrow" className={isAr ? "rotate-180" : ""} />
-          </a>
-          <a
-            href="#services"
-            className="flex items-center justify-center bg-cyan-700 py-3 px-6 rounded-xl text-white gap-2.5 font-bold hover:bg-cyan-800 transition-all text-xs md:text-sm shadow-md shadow-cyan-700/10 w-[230px] sm:w-auto"
-          >
-            <span>{isAr ? "استكشف خدماتنا" : "Explore Services"}</span>
-            <Image src="/icons/arrow_right.svg" width={18} height={10} alt="arrow" className={isAr ? "rotate-180" : ""} />
-          </a>
+            {/* Main Headline */}
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[52px] font-black tracking-tight text-[#003847] leading-[1.12]">
+              {isAr ? (
+                <>
+                  <span className="block">حلول متكاملة</span>
+                  <span className="block">لتكنولوجيا المعلومات</span>
+                  <span className="block text-[#ff6a00]">والشبكات</span>
+                </>
+              ) : (
+                <>
+                  <span className="block">Comprehensive</span>
+                  <span className="block">IT & Network</span>
+                  <span className="block text-[#ff6a00]">Solutions</span>
+                </>
+              )}
+            </h1>
+
+            {/* Subtitle */}
+            <p className="mt-4 text-sm sm:text-base md:text-lg font-medium text-slate-700 leading-relaxed">
+              {isAr ? (
+                <>
+                  <span className="block">تصميم وتنفيذ ودعم بنية تحتية موثوقة</span>
+                  <span className="block">لتكنولوجيا المعلومات لتمكين أعمالك</span>
+                </>
+              ) : (
+                <>
+                  <span className="block">Design, Implement and Support Reliable</span>
+                  <span className="block">IT Infrastructure for Your Business</span>
+                </>
+              )}
+            </p>
+
+            {/* CTA Button */}
+            <div className="mt-7 sm:mt-8 flex items-center">
+              <a
+                href={
+                  isAr
+                    ? "https://wa.me/201278167506?text=مرحبا%20إنفراتيك،%20أود%20طلب%20عرض%20أسعار%20لحلول%20تكنولوجيا%20المعلومات."
+                    : "https://wa.me/201278167506?text=Hi%20InfraTech,%20I'm%20interested%20in%20a%20quote%20for%20IT%20solutions."
+                }
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group inline-flex items-center gap-2.5 bg-[#ff6a00] hover:bg-[#e85d00] text-white font-bold text-sm sm:text-base py-3 sm:py-3.5 px-7 sm:px-8 rounded-full shadow-lg shadow-orange-500/25 hover:shadow-orange-500/40 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 cursor-pointer"
+              >
+                <span>{isAr ? "طلب عرض أسعار" : "Get a Quote"}</span>
+                {isAr ? (
+                  <ArrowLeft className="w-5 h-5 transition-transform group-hover:-translate-x-1" />
+                ) : (
+                  <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+                )}
+              </a>
+            </div>
+          </div>
         </div>
       </div>
-
-      <div className="flex max-[1026px]:hidden justify-end">
-        <Image
-          src={isAr ? "/images/hero_2_ar.png" : "/images/hero_2.png"}
-          width={580}
-          height={400}
-          alt="Hero Image"
-          className="object-contain"
-          priority
-        />
-      </div>
-    </div>
+    </section>
   );
 }
 

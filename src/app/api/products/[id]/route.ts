@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongodb";
 import Product from "@/models/Product";
 import jwt from "jsonwebtoken";
+import mongoose from "mongoose";
 
 function isAdminRequest(req: NextRequest) {
   const token = req.cookies.get("admin_token")?.value;
@@ -19,10 +20,17 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    await connectDB();
     const { id } = await params;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return NextResponse.json({ error: "Not found" }, { status: 404 });
+    }
+
+    await connectDB();
     const product = await Product.findById(id);
-    if (!product) return NextResponse.json({ error: "Not found" }, { status: 404 });
+    if (!product) {
+      return NextResponse.json({ error: "Not found" }, { status: 404 });
+    }
     return NextResponse.json({ product });
   } catch {
     return NextResponse.json({ error: "Failed to fetch product" }, { status: 500 });

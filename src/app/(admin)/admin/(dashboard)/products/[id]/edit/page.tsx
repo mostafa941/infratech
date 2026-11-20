@@ -24,6 +24,7 @@ export default function EditProduct() {
   const [discount, setDiscount] = useState("0");
   const [category, setCategory] = useState("");
   const [brand, setBrand] = useState("");
+  const [condition, setCondition] = useState<"new" | "imported">("new");
   const [stock, setStock] = useState("10");
   const [description, setDescription] = useState("");
   const [descriptionAr, setDescriptionAr] = useState("");
@@ -48,6 +49,7 @@ export default function EditProduct() {
         setDiscount(String(p.discount || "0"));
         setCategory(p.category || "");
         setBrand(p.brand || "");
+        setCondition(p.condition === "imported" ? "imported" : "new");
         setStock(String(p.stock || "10"));
         setDescription(p.description || "");
         setDescriptionAr(p.descriptionAr || "");
@@ -112,6 +114,7 @@ export default function EditProduct() {
         discount: parseFloat(discount),
         category,
         brand,
+        condition,
         stock: parseInt(stock),
         description,
         descriptionAr,
@@ -324,6 +327,42 @@ export default function EditProduct() {
                 placeholder="e.g. Cisco, HP, Dell"
                 className="w-full border border-slate-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 transition-all bg-slate-50"
               />
+            </div>
+
+            {/* Product Condition Selection: New vs Imported */}
+            <div>
+              <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">
+                Product Condition / حالة المنتج
+              </label>
+              <div className="grid grid-cols-2 gap-2.5">
+                <button
+                  type="button"
+                  onClick={() => setCondition("new")}
+                  className={`p-3 rounded-2xl border text-center transition-all cursor-pointer flex flex-col items-center justify-center gap-1 ${
+                    condition === "new"
+                      ? "border-emerald-500 bg-emerald-50/70 text-emerald-800 font-bold ring-2 ring-emerald-500/20 shadow-xs"
+                      : "border-slate-200 bg-slate-50 text-slate-600 hover:border-slate-300"
+                  }`}
+                >
+                  <span className="text-base">✨</span>
+                  <span className="text-xs font-extrabold">جديد (New)</span>
+                  <span className="text-[10px] text-slate-400">Brand New</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setCondition("imported")}
+                  className={`p-3 rounded-2xl border text-center transition-all cursor-pointer flex flex-col items-center justify-center gap-1 ${
+                    condition === "imported"
+                      ? "border-teal-600 bg-teal-50/80 text-teal-900 font-bold ring-2 ring-teal-500/20 shadow-xs"
+                      : "border-slate-200 bg-slate-50 text-slate-600 hover:border-slate-300"
+                  }`}
+                >
+                  <span className="text-base">📦</span>
+                  <span className="text-xs font-extrabold">استيراد (Imported)</span>
+                  <span className="text-[10px] text-slate-400">Original Import</span>
+                </button>
+              </div>
             </div>
 
             <div className="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-100">

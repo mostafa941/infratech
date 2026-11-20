@@ -9,6 +9,7 @@ export interface IProduct extends Document {
   shippingFee: number;
   category: string;
   brand?: string;
+  condition?: "new" | "imported";
   images: string[];
   discount?: number;
   stock: number;
@@ -27,6 +28,7 @@ const ProductSchema = new Schema<IProduct>(
     shippingFee: { type: Number, default: 0, min: 0 },
     category: { type: String, required: true },
     brand: { type: String, trim: true },
+    condition: { type: String, enum: ["new", "imported"], default: "new" },
     images: [{ type: String }],
     discount: { type: Number, min: 0, max: 100, default: 0 },
     stock: { type: Number, default: 0 },

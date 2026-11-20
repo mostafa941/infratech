@@ -111,9 +111,22 @@ export default function ProductDetails() {
 
           {/* Right Side: Product Info */}
           <div className="flex flex-col">
-            <span className="text-amber-600 bg-amber-50 font-bold text-xs px-3 py-1 rounded-md uppercase tracking-wider w-fit mb-3">
-              {product.category}
-            </span>
+            <div className="flex items-center gap-2 mb-3 flex-wrap">
+              <span className="text-amber-600 bg-amber-50 font-bold text-xs px-3 py-1 rounded-md uppercase tracking-wider">
+                {product.category}
+              </span>
+              {product.condition === "imported" ? (
+                <span className="bg-teal-50 text-[#003847] border border-teal-200 font-bold text-xs px-3 py-1 rounded-md inline-flex items-center gap-1.5 shadow-xs">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#003847]"></span>
+                  {lang === "ar" ? "استيراد" : "Imported"}
+                </span>
+              ) : (
+                <span className="bg-emerald-50 text-emerald-700 border border-emerald-200 font-bold text-xs px-3 py-1 rounded-md inline-flex items-center gap-1.5 shadow-xs">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                  {lang === "ar" ? "جديد" : "Brand New"}
+                </span>
+              )}
+            </div>
             <h1 className="text-2xl md:text-4xl font-extrabold text-slate-900 mb-3 tracking-tight leading-tight">
               {title}
             </h1>
@@ -145,9 +158,25 @@ export default function ProductDetails() {
 
             {/* Availability Status */}
             <div className="flex items-center gap-2 mb-4 text-sm">
-              <span className="text-slate-500">Availability:</span>
+              <span className="text-slate-500">{lang === "ar" ? "التوفر:" : "Availability:"}</span>
               <span className={`font-bold ${product.stock > 0 ? 'text-emerald-600' : 'text-rose-500'}`}>
-                {product.stock > 0 ? 'In Stock' : 'Out of Stock'}
+                {product.stock > 0 
+                  ? (lang === "ar" ? "متوفر في المخزن" : "In Stock") 
+                  : (lang === "ar" ? "غير متوفر" : "Out of Stock")}
+              </span>
+            </div>
+
+            {/* Product Condition Row */}
+            <div className="flex items-center gap-2 mb-4 text-sm">
+              <span className="text-slate-500">{lang === "ar" ? "حالة المنتج:" : "Condition:"}</span>
+              <span className={`font-bold px-2.5 py-0.5 rounded text-xs inline-flex items-center gap-1 ${
+                product.condition === "imported"
+                  ? "bg-teal-50 text-[#003847] border border-teal-200"
+                  : "bg-emerald-50 text-emerald-700 border border-emerald-200"
+              }`}>
+                {product.condition === "imported" 
+                  ? (lang === "ar" ? "📦 استيراد" : "📦 Imported")
+                  : (lang === "ar" ? "✨ جديد بالكامل" : "✨ Brand New")}
               </span>
             </div>
 

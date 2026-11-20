@@ -22,10 +22,12 @@ export async function GET(req: NextRequest) {
     const category = searchParams.get("category");
     const limit = parseInt(searchParams.get("limit") || "100");
     const featured = searchParams.get("featured");
+    const condition = searchParams.get("condition");
 
     const filter: Record<string, any> = {};
     if (category && category !== "all") filter.category = category;
     if (featured === "true") filter.featured = true;
+    if (condition && condition !== "all") filter.condition = condition;
 
     const products = await Product.find(filter).limit(limit).sort({ createdAt: -1 });
     return NextResponse.json({ products, total: products.length });

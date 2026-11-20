@@ -179,9 +179,22 @@ function AllProduct({ selectedCategory = "all" }: AllProductProps) {
                   {/* Top Portion Wrapped in Link to Product Details */}
                   <Link
                     href={`/products/${prodId}`}
-                    className="w-full flex flex-col items-center flex-1 cursor-pointer"
+                    className="w-full flex flex-col items-center flex-1 cursor-pointer relative"
                     title={title}
                   >
+                    {/* Condition Badge */}
+                    <div className="absolute top-0 end-0 z-10">
+                      {product.condition === "imported" ? (
+                        <span className="bg-[#003847] text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-xs">
+                          {isAr ? "استيراد" : "Imported"}
+                        </span>
+                      ) : (
+                        <span className="bg-emerald-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-xs">
+                          {isAr ? "جديد" : "New"}
+                        </span>
+                      )}
+                    </div>
+
                     {/* Product Image */}
                     <div className="relative w-36 h-32 sm:w-40 sm:h-36 mb-3 flex items-center justify-center p-2">
                       <img

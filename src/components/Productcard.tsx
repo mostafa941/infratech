@@ -21,6 +21,17 @@ function ProductCard({ product, onAddToCart }: ProductCardProps) {
       <div>
         {/* Thumbnail wrapper */}
         <div className="relative w-full h-44 bg-slate-50/50 rounded-xl overflow-hidden mb-4 flex items-center justify-center border border-slate-50">
+          {/* Condition Badge */}
+          {product.condition === "imported" ? (
+            <span className="absolute top-2.5 start-2.5 z-10 bg-[#003847] text-white text-[10px] font-bold px-2 py-0.5 rounded-md shadow-xs">
+              استيراد
+            </span>
+          ) : (
+            <span className="absolute top-2.5 start-2.5 z-10 bg-emerald-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-md shadow-xs">
+              جديد
+            </span>
+          )}
+
           <img
             src={thumbnail}
             alt={title}

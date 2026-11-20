@@ -70,6 +70,7 @@ export default function AdminAllProducts() {
                 <th className="p-5">Thumbnail</th>
                 <th className="p-5">Product Name</th>
                 <th className="p-5">Category</th>
+                <th className="p-5">Condition</th>
                 <th className="p-5">Base Price</th>
                 <th className="p-5">Discount</th>
                 <th className="p-5">Quantity Stock</th>
@@ -79,7 +80,7 @@ export default function AdminAllProducts() {
             <tbody className="divide-y divide-slate-100 text-slate-700 text-sm">
               {products.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="p-8 text-center text-slate-400 font-medium">
+                  <td colSpan={8} className="p-8 text-center text-slate-400 font-medium">
                     No products added to directory yet. Use Add New Product to start.
                   </td>
                 </tr>
@@ -108,6 +109,21 @@ export default function AdminAllProducts() {
                       <span className="text-xs bg-slate-100 text-slate-600 font-bold px-2 py-0.5 rounded uppercase tracking-wide">
                         {p.category}
                       </span>
+                    </td>
+
+                    {/* Condition */}
+                    <td className="p-5">
+                      {p.condition === "imported" ? (
+                        <span className="text-xs bg-teal-50 text-teal-800 border border-teal-200 font-bold px-2.5 py-1 rounded-lg inline-flex items-center gap-1.5 shadow-xs">
+                          <span className="w-1.5 h-1.5 rounded-full bg-teal-600"></span>
+                          <span>استيراد</span>
+                        </span>
+                      ) : (
+                        <span className="text-xs bg-emerald-50 text-emerald-800 border border-emerald-200 font-bold px-2.5 py-1 rounded-lg inline-flex items-center gap-1.5 shadow-xs">
+                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+                          <span>جديد</span>
+                        </span>
+                      )}
                     </td>
 
                     {/* Price */}
